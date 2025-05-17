@@ -1,40 +1,18 @@
 
-
-
-
-
 # from
 # https://docs.pytorch.org/vision/stable/models.html
 
-
 from torchvision.io import decode_image
 from torchvision.models import resnet50, ResNet50_Weights
-
-
-
-
 import os 
-# import pickle
 import numpy as np
 import pandas as pd
-# import shutil
-# import datetime
-# from PIL import Image
 import plotly.express as px
-# from plotly.subplots import make_subplots
 import torch
-# import torch.nn as nn
 from torch.utils.data import Dataset
-from torchvision.transforms.functional import pil_to_tensor
-# import torchvision.transforms.v2 as transforms
-# import torch.optim as optim
-
 
 torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-
-
 
 
 
@@ -70,7 +48,7 @@ image_path = "C:/Users/sezau/Downloads/food_images/train_images/train_images"
 
 dataset = SpectroImageDataset(image_path)
 
-loader = torch.utils.data.DataLoader(dataset, batch_size=32,  shuffle=True, drop_last=False)
+loader = torch.utils.data.DataLoader(dataset, batch_size=32,  shuffle=False, drop_last=False)
 
 
 for ii, batch in enumerate(loader, 0):
@@ -78,9 +56,8 @@ for ii, batch in enumerate(loader, 0):
     prediction = model(batch).detach().numpy()  #.squeeze(0)
 
           
-
 prediction.shape
-
+type(prediction)
 
 
 fig = px.line(data_frame=pd.DataFrame(prediction.T))
@@ -102,25 +79,25 @@ fig.show()
 
 
 
-image_path = "C:/Users/sezau/Downloads/food_images/train_images/train_images/fe9bbe121b.jpg"
+# image_path = "C:/Users/sezau/Downloads/food_images/train_images/train_images/fe9bbe121b.jpg"
 
-img = decode_image(image_path)
-img.shape
-type(img)
+# img = decode_image(image_path)
+# img.shape
+# type(img)
 
-# Step 3: Apply inference preprocessing transforms
-batch = preprocess(img).unsqueeze(0)
-batch.shape
+# # Step 3: Apply inference preprocessing transforms
+# batch = preprocess(img).unsqueeze(0)
+# batch.shape
 
-# Step 4: Use the model and print the predicted category
-prediction = model(batch)  .squeeze(0)
+# # Step 4: Use the model and print the predicted category
+# prediction = model(batch)  .squeeze(0)
 
 
-prediction.shape
-prediction.min()
-prediction.max()
+# prediction.shape
+# prediction.min()
+# prediction.max()
 
-# class_id = prediction.argmax().item()
+# # class_id = prediction.argmax().item()
 # score = prediction[class_id].item()
 # category_name = weights.meta["categories"][class_id]
 # print(f"{category_name}: {100 * score:.1f}%")
