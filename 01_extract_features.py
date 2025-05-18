@@ -11,24 +11,21 @@ from torchvision.models import resnet50, ResNet50_Weights
 import os 
 import numpy as np
 import pandas as pd
-import plotly.express as px
 import torch
 from torch.utils.data import Dataset
-import umap.umap_ as umap
-from sklearn.preprocessing import StandardScaler
 
 torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-
-
-image_path = "C:/Users/sezau/Downloads/food_images/train_images/train_images"
-label_path = "C:/Users/sezau/Downloads/food_images/train_img.csv"
-
-
+image_path = "D:/image_clust/food_images/train_images"
+label_path = "D:/image_clust/food_images/train_img.csv"
+featu_path = "D:/image_clust/features/features.npz"
 
 # Step 1: Initialize model with the best available weights
 weights = ResNet50_Weights.DEFAULT
+
+weights = ResNet50_Weights.IMAGENET1K_V2
+
 model = resnet50(weights=weights)
 model.eval()
 
@@ -87,11 +84,12 @@ df_labels = df_labels.set_index(keys="ImageId")
 dilab = df_labels.to_dict()
 dilab = dilab['ClassName']
 
-
 Y = np.array([dilab[a.item()] for a in  Y])
+
+X.shape
 Y.shape
 
-
+np.savez(file = featu_path, X = X, Y = Y)
 
 
 
