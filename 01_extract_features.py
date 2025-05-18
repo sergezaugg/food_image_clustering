@@ -5,6 +5,7 @@
 
 from torchvision.io import decode_image
 from torchvision.models import resnet50, ResNet50_Weights
+from torchvision.models import densenet121, DenseNet121_Weights 
 import os 
 import numpy as np
 import pandas as pd
@@ -16,16 +17,21 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 image_path = "D:/image_clust/food_images/train_images"
 label_path = "D:/image_clust/food_images/train_img.csv"
-featu_path = "D:/image_clust/features/features.npz"
+featu_path = "./extracted_features"
 
 # Step 1: Initialize model with the best available weights
-weights = ResNet50_Weights.DEFAULT
 
+
+model_tag = "ResNet50_IMAGENET1K_V2"
 weights = ResNet50_Weights.IMAGENET1K_V2
-
 model = resnet50(weights=weights)
-model.eval()
 
+# model_tag = "DenseNet121_IMAGENET1K_V1"
+# weights = DenseNet121_Weights.IMAGENET1K_V1
+# model = densenet121(weights=weights)
+
+
+model.eval()
 # Step 2: Initialize the inference transforms
 preprocess = weights.transforms()
 
@@ -52,7 +58,7 @@ class SpectroImageDataset(Dataset):
         return (len(self.all_img_files))
 
 dataset = SpectroImageDataset(image_path)
-loader = torch.utils.data.DataLoader(dataset, batch_size=32,  shuffle=False, drop_last=False)
+loader = torch.utils.data.DataLoader(dataset, batch_size=64,  shuffle=False, drop_last=False)
 
 X_li = []
 Y_li = []
@@ -85,7 +91,9 @@ Y = np.array([dilab[a.item()] for a in  Y])
 X.shape
 Y.shape
 
-np.savez(file = featu_path, X = X, Y = Y)
+out_name = os.path.join(featu_path, 'features_' + model_tag + '.npz')
+
+np.savez(file = out_name, X = X, Y = Y)
 
 
 
