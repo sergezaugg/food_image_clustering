@@ -17,17 +17,15 @@ if 'dapar' not in ss:
         'clusters_true' : np.array([]),
         }
     
-if 'dbscan' not in ss:
-    ss['dbscan'] = {
-        'eps' : 0.30,
-        'min_samples' : 10,
+if 'upar' not in ss:
+    ss['upar'] = {
+        'umap_n_neighbors' : 10,
+        'umap_n_dims_red' : 32,
+        'dbscan_eps' : 0.30,
+        'dbscan_min_samples' : 10,
         }
 
-if 'umap' not in ss:
-    ss['umap'] = {
-        'n_dims_red' : 32,
-        'n_neighbors' : 50,
-        }
+
 
 p01 = st.Page("page01.py", title="Activate data")
 p02 = st.Page("page02.py", title="Analyse")

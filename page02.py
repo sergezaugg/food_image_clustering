@@ -8,22 +8,18 @@ import streamlit as st
 from streamlit import session_state as ss
 import numpy as np
 import gc
-import pandas as pd 
-
-import os 
-import numpy as np
-import pandas as pd
+# import pandas as pd 
 import plotly.express as px
-import umap.umap_ as umap
-from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import DBSCAN
+# import umap.umap_ as umap
+# from sklearn.preprocessing import StandardScaler
+# from sklearn.cluster import DBSCAN
 from sklearn.metrics import v_measure_score, rand_score
 from sklearn.metrics.cluster import contingency_matrix
-
+from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
 
 gc.collect()
 
-# render page only id data is available 
+# render page only if data is available 
 if ss['dapar']['feat_path'] == 'empty' :
     st.text("First activate data (navigation bar left)")
 else :
@@ -38,91 +34,50 @@ else :
 
 if len(ss['dapar']['X']) > 0 :
     st.write("Shape of feature array", ss['dapar']['X'].shape)
-    st.write(pd.Series(ss['dapar']['clusters_true']).value_counts())
+    # st.write(pd.Series(ss['dapar']['clusters_true']).value_counts())
+
+    _ = st.select_slider(label = "UMAP dim", options=[2,4,8,16,32,64,128], 
+                         key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
+    
+    _ = st.select_slider(label = "UMAP n_neighbors", options=[2,5,10,15,20,30,40,50,75,100], 
+                         key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])
+    
+    _ = st.select_slider(label = "DBSCAN eps", options=np.arange(0.05, 3.0, 0.05).round(2), 
+                         key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
+
+    _ = st.select_slider(label = "DBSCAN min samples", options=np.arange(5, 51, 5), 
+                         key = "k_dbscan_min", value=ss['upar']["dbscan_min_samples"], on_change=update_ss, args=["k_dbscan_min", "dbscan_min_samples"])
 
 
-        
+
+
     #-------------------------------------------
     # (1) Load data  
     X = ss['dapar']['X']
     clusters_true = ss['dapar']['clusters_true']
     #-------------------------------------------
+    X2D_scaled = dim_reduction_for_2D_plot(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'])
+    X_scaled = dim_reduction_for_clustering(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'], n_dims_red = ss['upar']['umap_n_dims_red'])
+    clusters_pred = perform_dbscan_clusterin(X = X_scaled, eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
 
 
 
-
-    # UMAP 
-    n_neighbors = 10
-    n_dims_red = 32
-
-    # DBSCAN
-    eps = 0.6
-    min_samples = 10
-
-
+    # pd.Series(clusters_pred).value_counts()
+    
 
 
 
 
 
 
-
-
-    #-------------------------------------------
-    # (2) UMAP dim reduction for 2D plot 
-    reducer = umap.UMAP(
-        n_neighbors = n_neighbors, 
-        n_components = 2, 
-        metric = 'euclidean',
-        n_jobs = -1
-        )
-    X2D_trans = reducer.fit_transform(X)
-    # standardize
-    scaler = StandardScaler()
-    X2D_scaled = scaler.fit_transform(X2D_trans)
-    X2D_scaled.shape
-    #-------------------------------------------
-
-
-    #-------------------------------------------
-    # (2) UMAP dim reduction for clustering
-    reducer = umap.UMAP(
-        n_neighbors = n_neighbors, 
-        n_components = n_dims_red, 
-        metric = 'euclidean',
-        n_jobs = -1
-        )
-    X_trans = reducer.fit_transform(X)
-    # standardize
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X_trans)
-    X_scaled.shape
-    #-------------------------------------------
-
-
-
-    #-------------------------------------------
-    # (3) Clustering  
-    clu = DBSCAN(eps = eps, min_samples=min_samples, metric='euclidean', n_jobs = 8) 
-    clusters_pred = clu.fit_predict(X_scaled)
-    pd.Series(clusters_pred).value_counts()
-    #-------------------------------------------
 
 
     #-------------------------------------------
     # (4) Compare  
 
-    clusters_pred.shape
-    clusters_true.shape
     v_measure_score(labels_true = clusters_true , labels_pred = clusters_pred, beta=1.0)
     rand_score(labels_true = clusters_true , labels_pred = clusters_pred)
-    # z = contingency_matrix(labels_true = clusters_true , labels_pred = clusters_pred)
-    # fig = px.imshow(z, text_auto=True)
-    # fig.show()
-
-
-
-
+  
     # plot ground truth
     fig01 = px.scatter(
         x =X2D_scaled[:,0],
@@ -149,12 +104,12 @@ if len(ss['dapar']['X']) > 0 :
     _ = fig02.update_layout(margin=dict(t=10, b=10, l=15, r=300))
     # fig02.show()
 
-    #-------------------------------------------
 
-
-    st.plotly_chart(fig01, use_container_width=True, theme=None)
-                    
-    st.plotly_chart(fig02, use_container_width=True, theme=None)
+    c01, c02 = st.columns(2)
+    with c01:
+        st.plotly_chart(fig01, use_container_width=True, theme=None)
+    with c02:             
+        st.plotly_chart(fig02, use_container_width=True, theme=None)
 
 
 
