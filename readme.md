@@ -36,4 +36,11 @@ streamlit run stmain.py
 ```
 
 
+# links 
+
+# data from 
+# https://www.kaggle.com/datasets/bjoernjostein/food-classification
+
+# code initial from from
+# https://docs.pytorch.org/vision/stable/models.html
 

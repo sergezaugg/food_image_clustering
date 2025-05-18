@@ -1,10 +1,7 @@
-
-
-# data from 
-# https://www.kaggle.com/datasets/bjoernjostein/food-classification
-
-# code initial from from
-# https://docs.pytorch.org/vision/stable/models.html
+#--------------------             
+# Author : Serge Zaugg
+# Description : 
+#--------------------
 
 from torchvision.io import decode_image
 from torchvision.models import resnet50, ResNet50_Weights
@@ -39,7 +36,6 @@ class SpectroImageDataset(Dataset):
     """
     
     """
-
     def __init__(self, imgpath):
         self.all_img_files = np.array([a for a in os.listdir(imgpath) if '.jpg' in a])
         self.imgpath = imgpath

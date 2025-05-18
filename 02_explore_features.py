@@ -1,11 +1,7 @@
-
-
-
-# data from 
-# https://www.kaggle.com/datasets/bjoernjostein/food-classification
-
-# code initial from from
-# https://docs.pytorch.org/vision/stable/models.html
+#--------------------             
+# Author : Serge Zaugg
+# Description : 
+#--------------------
 
 import os 
 import numpy as np
@@ -13,67 +9,131 @@ import pandas as pd
 import plotly.express as px
 import umap.umap_ as umap
 from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import DBSCAN
+from sklearn.metrics import v_measure_score, rand_score
+from sklearn.metrics.cluster import contingency_matrix
+
+
 
 featu_path = "D:/image_clust/features/features.npz"
 
+
+
+
+#-------------------------------------------
+# (1) Load data  
 npzfile = np.load(featu_path)
 X = npzfile['X']
-C = npzfile['Y']
-X.shape
-C.shape
+clusters_true = npzfile['Y']
+pd.Series(clusters_true).value_counts()
+#-------------------------------------------
 
 
-pd.Series(C).value_counts()
-
-# # type(prediction)
-# fig = px.line(data_frame=pd.DataFrame(X.T))
-# fig.show()
 
 
-n_neighbors = 5
-n_dims_red = 2
+# UMAP 
+n_neighbors = 10
+n_dims_red = 32
 
-# umap 
+# DBSCAN
+eps = 0.6
+min_samples = 10
+
+
+
+
+
+
+
+
+
+
+#-------------------------------------------
+# (2) UMAP dim reduction for 2D plot 
+reducer = umap.UMAP(
+    n_neighbors = n_neighbors, 
+    n_components = 2, 
+    metric = 'euclidean',
+    n_jobs = -1
+    )
+X2D_trans = reducer.fit_transform(X)
+# standardize
+scaler = StandardScaler()
+X2D_scaled = scaler.fit_transform(X2D_trans)
+X2D_scaled.shape
+#-------------------------------------------
+
+
+#-------------------------------------------
+# (2) UMAP dim reduction for clustering
 reducer = umap.UMAP(
     n_neighbors = n_neighbors, 
     n_components = n_dims_red, 
     metric = 'euclidean',
     n_jobs = -1
     )
-
-# reducer.fit(X[0:25000])
-# X_trans = reducer.transform(X)
 X_trans = reducer.fit_transform(X)
-
-X_trans.shape
-
 # standardize
 scaler = StandardScaler()
-scaler.fit(X_trans)
-X_scaled = scaler.transform(X_trans)
-
+X_scaled = scaler.fit_transform(X_trans)
 X_scaled.shape
+#-------------------------------------------
 
+
+
+#-------------------------------------------
+# (3) Clustering  
+clu = DBSCAN(eps = eps, min_samples=min_samples, metric='euclidean', n_jobs = 8) 
+clusters_pred = clu.fit_predict(X_scaled)
+pd.Series(clusters_pred).value_counts()
+#-------------------------------------------
+
+
+#-------------------------------------------
+# (4) Compare  
+
+clusters_pred.shape
+clusters_true.shape
+v_measure_score(labels_true = clusters_true , labels_pred = clusters_pred, beta=1.0)
+rand_score(labels_true = clusters_true , labels_pred = clusters_pred)
+# z = contingency_matrix(labels_true = clusters_true , labels_pred = clusters_pred)
+# fig = px.imshow(z, text_auto=True)
+# fig.show()
+
+
+
+
+# plot ground truth
 fig = px.scatter(
-    x =X_scaled[:,0],
-    y =X_scaled[:,1],
-    color = C,
+    x =X2D_scaled[:,0],
+    y =X2D_scaled[:,1],
+    color = clusters_true,
     template='plotly_dark',
+    height=800,
+    width=1100,
     color_discrete_sequence = px.colors.qualitative.Light24
-    # color_discrete_sequence = px.colors.sequential.Turbo
-    # color_discrete_sequence = px.colors.sequential.Rainbow
     )
-
+_ = fig.update_layout(margin=dict(t=10, b=10, l=15, r=300))
 fig.show()
 
+# plot predicted clusters 
+fig = px.scatter(
+    x =X2D_scaled[:,0],
+    y =X2D_scaled[:,1],
+    color = clusters_pred.astype('str'),
+    template='plotly_dark',
+    height=800,
+    width=1100,
+    color_discrete_sequence = px.colors.qualitative.Light24,
+    )
+_ = fig.update_layout(margin=dict(t=10, b=10, l=15, r=300))
+fig.show()
+
+#-------------------------------------------
 
 
-
-
-
-
-
-
+# color_discrete_sequence = px.colors.sequential.Turbo
+# color_discrete_sequence = px.colors.sequential.Rainbow
 
 # @st.cache_data
 # def make_fig(df, dot_colors):
