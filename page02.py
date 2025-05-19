@@ -53,8 +53,10 @@ if len(ss['dapar']['X']) > 0 :
                             key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])
         
     with cols[2]:
-        with st.container(border=True, height = 230):   
-            _ = st.select_slider(label = "DBSCAN eps", options=np.arange(0.05, 2.05, 0.05).round(2), 
+        with st.container(border=True, height = 230): 
+
+            eps_options = (10.0**(np.arange(-3, 1,0.1))).round(3)
+            _ = st.select_slider(label = "DBSCAN eps", options = eps_options, 
                                 key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
             _ = st.select_slider(label = "DBSCAN min samples", options=np.arange(5, 51, 5), 
                                 key = "k_dbscan_min", value=ss['upar']["dbscan_min_samples"], on_change=update_ss, args=["k_dbscan_min", "dbscan_min_samples"])
