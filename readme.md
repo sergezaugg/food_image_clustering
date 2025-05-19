@@ -1,4 +1,4 @@
-# CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCION
+# CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION
 
 ### Data
 * Data from Food Classification dataset published on Kaggle by Bjorn.
@@ -20,11 +20,11 @@
 ### Dependencies / Intallation
 * Developed under Python 3.12.8
 * First make a venv, then:
-* For streamlit deployment only
+* For Streamlit deployment only
 ```
 pip install -r requirements.txt
 ```
-* For feature extraction (Pytorch / GPU) and streamlit deployment 
+* For feature extraction (Pytorch / GPU) and Streamlit deployment 
 ```
 pip install -r req_torchcuda.txt
 ```
