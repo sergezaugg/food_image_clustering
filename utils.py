@@ -1,6 +1,7 @@
-
-
-
+#--------------------             
+# Author : Serge Zaugg
+# Description : Computation steps defined as functions here
+#--------------------
 
 import os
 import streamlit as st
@@ -12,12 +13,6 @@ import plotly.express as px
 import umap.umap_ as umap
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import DBSCAN
-# from sklearn.metrics import v_measure_score, rand_score
-# from sklearn.metrics.cluster import contingency_matrix
-
-
-# fit_transform(X, y=None, ensure_all_finite=True, **kwargs)
-
 
 def update_ss(kname, ssname):
     """
