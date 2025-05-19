@@ -48,7 +48,6 @@ else :
             st.text("")        
             st.write('Active: ', featu_path)        
 
-
 if len(ss['dapar']['X']) > 0 :
    
     with cols[1]:
@@ -56,11 +55,9 @@ if len(ss['dapar']['X']) > 0 :
             _ = st.select_slider(label = "UMAP reduce dim", options=[2,4,8,16,32,64,128], 
                                 key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
             _ = st.select_slider(label = "UMAP nb neighbors", options=[2,5,10,15,20,30,40,50,75,100], 
-                            key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])
-        
+                            key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])   
     with cols[2]:
         with st.container(border=True, height = 230): 
-
             eps_options = (10.0**(np.arange(-3, 1,0.1))).round(3)
             _ = st.select_slider(label = "DBSCAN eps", options = eps_options, 
                                 key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
@@ -72,11 +69,8 @@ if len(ss['dapar']['X']) > 0 :
     X2D_scaled = dim_reduction_for_2D_plot(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'])
     X_scaled = dim_reduction_for_clustering(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'], n_dims_red = ss['upar']['umap_n_dims_red'])
     clusters_pred = perform_dbscan_clusterin(X = X_scaled, eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
-    
     num_unasigned = (clusters_pred == -1).sum()
     num_total = len(clusters_pred)
-    
-    
     clusters_pred_str = np.array([format(a, '03d') for a in clusters_pred])
     df_true = make_sorted_df(cat = ss['dapar']['clusters_true'], cat_name = 'True class', X = X2D_scaled)
     df_pred = make_sorted_df(cat = clusters_pred_str, cat_name = 'Predicted cluster', X = X2D_scaled)
