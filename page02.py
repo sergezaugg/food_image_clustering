@@ -8,16 +8,14 @@ import streamlit as st
 from streamlit import session_state as ss
 import numpy as np
 import gc
-import pandas as pd 
-import plotly.express as px
+# import pandas as pd 
+# import plotly.express as px
 from sklearn.metrics import v_measure_score, rand_score
 from sklearn.metrics.cluster import contingency_matrix
 from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
 from utils import make_sorted_df, make_scatter_plot
 import kagglehub
 gc.collect()
-
-
 
 cols = st.columns([0.4, 0.3, 0.3, 0.3])
 
@@ -35,16 +33,10 @@ if ss['dapar']['feat_path'] == 'empty' :
 else :
     with cols[0]:
         with st.container(border=True, height = 230):   
-            with st.form("form01", border=False):
-                featu_path = st.selectbox("Select data with extracted features", options = ss['upar']['model_list'], index=ss['upar']['current_model_index'])
-                submitted_1 = st.form_submit_button("Confirm", type = "primary")   
-                if submitted_1:    
-                    npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
-                    ss['dapar']['X'] = npzfile['X']
-                    ss['dapar']['clusters_true'] = npzfile['Y']
-                    # update index for satefulness of the selectbox
-                    ss['upar']['current_model_index'] =  ss['upar']['model_list'].index(featu_path)
-                    st.rerun()
+            featu_path = ss['upar']['model_list'][ss['upar']['current_model_index']] 
+            npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
+            ss['dapar']['X'] = npzfile['X']
+            ss['dapar']['clusters_true'] = npzfile['Y']
             st.text("")        
             st.write('Active: ', featu_path)        
 
