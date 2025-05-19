@@ -23,6 +23,8 @@ if 'upar' not in ss:
         'umap_n_dims_red' : 32,
         'dbscan_eps' : 0.501,
         'dbscan_min_samples' : 10,
+        'model_list' : 'empty',
+        'current_model_index' : 2, 
         }
 
 p01 = st.Page("page01.py", title="Summary")
@@ -34,13 +36,14 @@ pg.run()
 
 with st.sidebar:
     st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
-    st.text("v0.6.0 - under devel")
+    st.text("v0.6.1")
     st.markdown(''':blue[QUICK GUIDE]''')
     st.text("(1) Choose extracted features")
     st.text("(2) Set UMAP params")
     st.text("(3) Set DBSCAN params")
     st.text("(4) Explore scatterplots")
     st.title(""); st.title(""); st.title(""); 
+    st.text("Needs quite some computation - UMAP run can take a few minutes, DBSCAN is much faster")
     st.title(""); st.title("")
     st.markdown(''':gray[RELATED TOPICS]''')
     st.page_link("https://ml-performance-metrics.streamlit.app/", label=":gray[ml-performance-metrics]")

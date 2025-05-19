@@ -18,8 +18,8 @@ import kagglehub
 gc.collect()
 
 
-cols = st.columns([0.4, 0.3, 0.3, 0.3])
 
+cols = st.columns([0.4, 0.3, 0.3, 0.3])
 
 # First, get data or local path to data
 if ss['dapar']['feat_path'] == 'empty' :
@@ -28,6 +28,7 @@ if ss['dapar']['feat_path'] == 'empty' :
     kgl_ds = "sezaugg/" + 'food-classification-features-v01' # link on Kaggle , is fixed
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
+    ss['upar']['model_list'] = os.listdir(ss['dapar']['feat_path'])
     st.rerun()
 
 # main dashboard
@@ -35,13 +36,17 @@ else :
     with cols[0]:
         with st.container(border=True, height = 230):   
             with st.form("form01", border=False):
-                featu_path = st.selectbox("Select data with extracted features", options = os.listdir(ss['dapar']['feat_path']))
+                featu_path = st.selectbox("Select data with extracted features", options = ss['upar']['model_list'], index=ss['upar']['current_model_index'])
                 submitted_1 = st.form_submit_button("Confirm", type = "primary")   
                 if submitted_1:    
                     npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
                     ss['dapar']['X'] = npzfile['X']
                     ss['dapar']['clusters_true'] = npzfile['Y']
-
+                    # update index for satefulness of the selectbox
+                    ss['upar']['current_model_index'] =  ss['upar']['model_list'].index(featu_path)
+                    st.rerun()
+            st.text("")        
+            st.write('Active: ', featu_path)        
 
 if len(ss['dapar']['X']) > 0 :
    
@@ -50,11 +55,9 @@ if len(ss['dapar']['X']) > 0 :
             _ = st.select_slider(label = "UMAP reduce dim", options=[2,4,8,16,32,64,128], 
                                 key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
             _ = st.select_slider(label = "UMAP nb neighbors", options=[2,5,10,15,20,30,40,50,75,100], 
-                            key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])
-        
+                            key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])   
     with cols[2]:
         with st.container(border=True, height = 230): 
-
             eps_options = (10.0**(np.arange(-3, 1,0.1))).round(3)
             _ = st.select_slider(label = "DBSCAN eps", options = eps_options, 
                                 key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
@@ -66,11 +69,8 @@ if len(ss['dapar']['X']) > 0 :
     X2D_scaled = dim_reduction_for_2D_plot(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'])
     X_scaled = dim_reduction_for_clustering(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'], n_dims_red = ss['upar']['umap_n_dims_red'])
     clusters_pred = perform_dbscan_clusterin(X = X_scaled, eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
-    
     num_unasigned = (clusters_pred == -1).sum()
     num_total = len(clusters_pred)
-    
-    
     clusters_pred_str = np.array([format(a, '03d') for a in clusters_pred])
     df_true = make_sorted_df(cat = ss['dapar']['clusters_true'], cat_name = 'True class', X = X2D_scaled)
     df_pred = make_sorted_df(cat = clusters_pred_str, cat_name = 'Predicted cluster', X = X2D_scaled)
@@ -88,7 +88,6 @@ if len(ss['dapar']['X']) > 0 :
             st.write("v_measure_score", round(met_v_measu,2))
             st.write("rand_score", round(met_rand_sc,2))
    
-
     #-------------------------------------------
     # show plots 
     c01, c02 = st.columns(2)
@@ -97,7 +96,6 @@ if len(ss['dapar']['X']) > 0 :
         
     with c02:
         st.plotly_chart(fig02, use_container_width=False, theme=None)
-
 
 
     with st.container(border=True):   
