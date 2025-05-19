@@ -21,7 +21,7 @@ if 'upar' not in ss:
     ss['upar'] = {
         'umap_n_neighbors' : 10,
         'umap_n_dims_red' : 32,
-        'dbscan_eps' : 0.30,
+        'dbscan_eps' : 0.501,
         'dbscan_min_samples' : 10,
         }
 
@@ -34,7 +34,7 @@ pg.run()
 
 with st.sidebar:
     st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
-    st.text("v0.5.0 - under devel")
+    st.text("v0.6.0 - under devel")
     st.markdown(''':blue[QUICK GUIDE]''')
     st.text("(1) Choose extracted features")
     st.text("(2) Set UMAP params")

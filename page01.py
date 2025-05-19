@@ -6,11 +6,18 @@
 import streamlit as st
 from streamlit import session_state as ss
 
-c00, c01  = st.columns([0.2, 0.1])
+c00, c01  = st.columns([0.1, 0.18])
+
 with c00:
     with st.container(border=True) : 
+        st.header("Data flow chart")
+        st.image(image = "pics\data_flow_chart_2.png", caption="Data flow chart", width=None, 
+                 use_column_width=None, clamp=False, channels="RGB", output_format="auto", use_container_width=False)
+         
+with c01:
+    with st.container(border=True) : 
         
-        st.header("Summary")
+        # st.header("Summary")
 
         st.markdown(''' 
 
@@ -23,21 +30,18 @@ with c00:
             * Features extracted with image classification models pre-trained with the Imagenet datataset
             * Details see here : https://docs.pytorch.org/vision/main/models.html
             * As output we used the last linear layer which outputs 1000 continuous features (ommited Softamx) 
+            * These models were trained specifically for the Imagenet classes, so let's hope the feature are informative for our task
 
-            ### A bit of context
-            * These models were trained specifically for the 1000 Imagenet classes, so let's hope the feature are informative for our task
+            ### Dimensionality reduction
+            * We used Uniform Manifold Approximation and Projection ([UMAP](https://umap-learn.readthedocs.io)), a technique for general non-linear dimension reduction.        
 
             ### Clustering
-            * Here the focus is on clustering (i.e. without using the labels)
+            * Clustering done with [DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html).
+            * Here the focus is on clustering and label are not used during training
             * Labels are only used to assess the quality of clustering
-       
-            ### LINKS  
-            * The feature matrix dim-reduced with [UMAP](https://umap-learn.readthedocs.io). 
-            * Clustering done with [DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html).        
                     
             ''')
      
-    
-                
+ 
 
       
