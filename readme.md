@@ -16,22 +16,26 @@
 * Labels are only used to assess the quality of clustering
 
 
-## Hmmm
-* This model was trained specifically for the 1000 Imagenet classes, so let's hope the feature are informative for our task
-* 
+### A bit of context
+* These models were trained specifically for the 1000 Imagenet classes, so let's hope the feature are informative for our task
 
 
 ### Dependencies / Intallation
 * Developed under Python 3.12.8
 * First make a venv, then:
+* For streamlit deployment only
 ```
 pip install -r requirements.txt
+```
+* For feature extraction (Pytorch / GPU) and streamlit deployment 
+```
+pip install -r req_torchcuda.txt
 ```
 
 ### Usage / Sample code
 *  Start dashboard
 ```bash 
 streamlit run stmain.py
-
 ```
+*  Extract features see **01_extract_features.py**, done rarely!
 
