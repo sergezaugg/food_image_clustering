@@ -64,6 +64,11 @@ if len(ss['dapar']['X']) > 0 :
     X2D_scaled = dim_reduction_for_2D_plot(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'])
     X_scaled = dim_reduction_for_clustering(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'], n_dims_red = ss['upar']['umap_n_dims_red'])
     clusters_pred = perform_dbscan_clusterin(X = X_scaled, eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
+    
+    num_unasigned = (clusters_pred == -1).sum()
+    num_total = len(clusters_pred)
+    
+    
     clusters_pred_str = np.array([format(a, '03d') for a in clusters_pred])
     df_true = make_sorted_df(cat = ss['dapar']['clusters_true'], cat_name = 'True class', X = X2D_scaled)
     df_pred = make_sorted_df(cat = clusters_pred_str, cat_name = 'Predicted cluster', X = X2D_scaled)
@@ -77,7 +82,7 @@ if len(ss['dapar']['X']) > 0 :
     with cols[3]:
         with st.container(border=True, height = 230): 
             st.text("CLUSTERING METRICS (under dev):")
-            st.text("v_measure and rand_score are between 0.0 and 1.0")  
+            st.write("N_unassigned / N_tot", num_unasigned, " / ", num_total)
             st.write("v_measure_score", round(met_v_measu,2))
             st.write("rand_score", round(met_rand_sc,2))
    
@@ -98,6 +103,7 @@ if len(ss['dapar']['X']) > 0 :
         st.text("Plots are zoomable and categories can be selectively hidden/shown by click in legend.") 
         st.text("Noisy samples, i.e. those that were not assigned to a cluster, are given the label '-01'") 
         st.text("The numerical value of Cluster IDs is arbitrary and cannot be automatically linked to a true class, you have to assess the match graphically or with clustering metrics") 
+        st.text("v_measure and rand_score are between 0.0 and 1.0")  
 
      
         
