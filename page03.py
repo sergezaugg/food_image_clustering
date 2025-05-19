@@ -7,8 +7,6 @@ import os
 import streamlit as st
 from streamlit import session_state as ss
 import numpy as np
-import streamlit as st
-from streamlit import session_state as ss
 import kagglehub
 
 c00, c01  = st.columns([0.1, 0.18])

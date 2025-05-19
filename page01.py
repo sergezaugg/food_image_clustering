@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : Utility functions used by other scripts
+# Description : Info text
 #--------------------
 
 import streamlit as st
