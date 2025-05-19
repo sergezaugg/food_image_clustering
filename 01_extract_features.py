@@ -7,6 +7,7 @@ from torchvision.io import decode_image
 from torchvision.models import resnet50, ResNet50_Weights
 from torchvision.models import densenet121, DenseNet121_Weights 
 from torchvision.models import efficientnet_v2_s, EfficientNet_V2_S_Weights 
+from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
 
 
 
@@ -30,13 +31,13 @@ featu_path = "./extracted_features"
 # weights = ResNet50_Weights.IMAGENET1K_V2
 # model = resnet50(weights=weights)
 
-model_tag = "DenseNet121_IMAGENET1K_V1"
-weights = DenseNet121_Weights.IMAGENET1K_V1
-model = densenet121(weights=weights)
+# model_tag = "DenseNet121_IMAGENET1K_V1"
+# weights = DenseNet121_Weights.IMAGENET1K_V1
+# model = densenet121(weights=weights)
 
-# model_tag = "Efficientnet_v2_s_IMAGENET1K_V1"
-# weights = EfficientNet_V2_S_Weights.IMAGENET1K_V1
-# model = efficientnet_v2_s(weights=weights)
+model_tag = "MobileNet_V3_Large_IMAGENET1K_V2"
+weights = MobileNet_V3_Large_Weights.IMAGENET1K_V2
+model = mobilenet_v3_large(weights=weights)
 
 
 

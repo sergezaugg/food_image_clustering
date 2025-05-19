@@ -34,8 +34,8 @@ if ss['dapar']['feat_path'] == 'empty' :
 else :
     with cols[0]:
         with st.form("form01", border=False):
-            featu_path = st.selectbox("Select extracted features", options = os.listdir(ss['dapar']['feat_path']))
-            submitted_1 = st.form_submit_button("Choose", type = "primary")   
+            featu_path = st.selectbox("Select data with extracted features", options = os.listdir(ss['dapar']['feat_path']))
+            submitted_1 = st.form_submit_button("Confirm", type = "primary")   
             if submitted_1:    
                 npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
                 ss['dapar']['X'] = npzfile['X']
@@ -67,19 +67,17 @@ if len(ss['dapar']['X']) > 0 :
     clusters_pred_str = np.array([format(a, '03d') for a in clusters_pred])
     df_true = make_sorted_df(cat = ss['dapar']['clusters_true'], cat_name = 'True class', X = X2D_scaled)
     df_pred = make_sorted_df(cat = clusters_pred_str, cat_name = 'Predicted cluster', X = X2D_scaled)
-    fig01 = make_scatter_plot(df = df_true, cat_name = 'True class')
-    fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster')
+    fig01 = make_scatter_plot(df = df_true, cat_name = 'True class', title = "Ground truth")
+    fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters")
 
 
     #-------------------------------------------
     # show plots 
     c01, c02 = st.columns(2)
     with c01:
-        st.text("Ground truth")
         st.plotly_chart(fig01, use_container_width=False, theme=None)
         st.text("Plots are zoomable and categories can be selectively hidden/shown by click in legend.")
     with c02:
-        st.text("Predicted clusters")             
         st.plotly_chart(fig02, use_container_width=False, theme=None)
 
 

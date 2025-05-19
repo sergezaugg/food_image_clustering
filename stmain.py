@@ -33,6 +33,7 @@ pg = st.navigation([p02, p01])
 pg.run()
 
 with st.sidebar:
+    st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCION**]''')
     st.text("v0.5.0 - under devel")
     st.markdown(''':blue[QUICK GUIDE]''')
     st.text("(1) Choose extracted features")

@@ -74,20 +74,24 @@ def make_sorted_df(cat, cat_name, X):
     return(df)
 
 @st.cache_data
-def make_scatter_plot(df, cat_name):
+def make_scatter_plot(df, cat_name, title = "not set"):
     fig = px.scatter(
         data_frame = df,
         x = 'Dim-1',
         y = 'Dim-2',
         color = cat_name,
         template='plotly_dark',
-        height=1000,
+        height=900,
         width =1000,
         color_discrete_sequence = px.colors.qualitative.Light24,
+        title = title,
+        # labels = {'aaa', ""}
         )
-    _ = fig.update_layout(margin=dict(t=15, b=500, l=15, r=15))
+    _ = fig.update_layout(margin=dict(t=30, b=350, l=15, r=15))
     _ = fig.update_layout(legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="left", x=0.0))
     _ = fig.update_layout(showlegend=True,legend_title=None)
+    _ = fig.update_layout(yaxis_title=None)
+    _ = fig.update_layout(xaxis_title=None)
     return(fig)
 
 
