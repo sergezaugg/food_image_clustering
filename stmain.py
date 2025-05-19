@@ -32,3 +32,15 @@ pg = st.navigation([p02, p01])
 
 pg.run()
 
+with st.sidebar:
+    st.text("v0.5.0 - under devel")
+    st.markdown(''':blue[QUICK GUIDE]''')
+    st.text("(1) Choose extracted features")
+    st.text("(2) Set UMAP params")
+    st.text("(3) Set DBSCAN params")
+    st.text("(4) Explore scatterplots")
+    st.title(""); st.title(""); st.title(""); 
+    st.title(""); st.title("")
+    st.markdown(''':gray[RELATED TOPICS]''')
+    st.page_link("https://ml-performance-metrics.streamlit.app/", label=":gray[ml-performance-metrics]")
+    st.page_link("https://purenoisefeatures.streamlit.app", label=":gray[impact of pure-noise-features]")

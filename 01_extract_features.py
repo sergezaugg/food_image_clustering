@@ -6,6 +6,10 @@
 from torchvision.io import decode_image
 from torchvision.models import resnet50, ResNet50_Weights
 from torchvision.models import densenet121, DenseNet121_Weights 
+from torchvision.models import efficientnet_v2_s, EfficientNet_V2_S_Weights 
+
+
+
 import os 
 import numpy as np
 import pandas as pd
@@ -22,13 +26,20 @@ featu_path = "./extracted_features"
 # Step 1: Initialize model with the best available weights
 
 
-model_tag = "ResNet50_IMAGENET1K_V2"
-weights = ResNet50_Weights.IMAGENET1K_V2
-model = resnet50(weights=weights)
+# model_tag = "ResNet50_IMAGENET1K_V2"
+# weights = ResNet50_Weights.IMAGENET1K_V2
+# model = resnet50(weights=weights)
 
-# model_tag = "DenseNet121_IMAGENET1K_V1"
-# weights = DenseNet121_Weights.IMAGENET1K_V1
-# model = densenet121(weights=weights)
+model_tag = "DenseNet121_IMAGENET1K_V1"
+weights = DenseNet121_Weights.IMAGENET1K_V1
+model = densenet121(weights=weights)
+
+# model_tag = "Efficientnet_v2_s_IMAGENET1K_V1"
+# weights = EfficientNet_V2_S_Weights.IMAGENET1K_V1
+# model = efficientnet_v2_s(weights=weights)
+
+
+
 
 
 model.eval()
@@ -58,7 +69,7 @@ class SpectroImageDataset(Dataset):
         return (len(self.all_img_files))
 
 dataset = SpectroImageDataset(image_path)
-loader = torch.utils.data.DataLoader(dataset, batch_size=64,  shuffle=False, drop_last=False)
+loader = torch.utils.data.DataLoader(dataset, batch_size=32,  shuffle=False, drop_last=False)
 
 X_li = []
 Y_li = []

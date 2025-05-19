@@ -45,14 +45,16 @@ else :
 if len(ss['dapar']['X']) > 0 :
    
     with cols[1]:
-        _ = st.select_slider(label = "UMAP dim", options=[2,4,8,16,32,64,128], 
+        _ = st.select_slider(label = "UMAP reduce dim", options=[2,4,8,16,32,64,128], 
                             key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
+        st.text("Will recompute UMAP (slow) ")
     with cols[2]:    
-        _ = st.select_slider(label = "UMAP n_neighbors", options=[2,5,10,15,20,30,40,50,75,100], 
+        _ = st.select_slider(label = "UMAP nb neighbors", options=[2,5,10,15,20,30,40,50,75,100], 
                          key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])
     with cols[3]:
-        _ = st.select_slider(label = "DBSCAN eps", options=np.arange(0.05, 3.0, 0.05).round(2), 
+        _ = st.select_slider(label = "DBSCAN eps", options=np.arange(0.05, 2.05, 0.05).round(2), 
                             key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
+        st.text("Will recompute DBSCAN")
     with cols[4]:
         _ = st.select_slider(label = "DBSCAN min samples", options=np.arange(5, 51, 5), 
                             key = "k_dbscan_min", value=ss['upar']["dbscan_min_samples"], on_change=update_ss, args=["k_dbscan_min", "dbscan_min_samples"])
@@ -62,84 +64,28 @@ if len(ss['dapar']['X']) > 0 :
     X2D_scaled = dim_reduction_for_2D_plot(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'])
     X_scaled = dim_reduction_for_clustering(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'], n_dims_red = ss['upar']['umap_n_dims_red'])
     clusters_pred = perform_dbscan_clusterin(X = X_scaled, eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
+    clusters_pred_str = np.array([format(a, '03d') for a in clusters_pred])
     df_true = make_sorted_df(cat = ss['dapar']['clusters_true'], cat_name = 'True class', X = X2D_scaled)
-    df_pred = make_sorted_df(cat = clusters_pred.astype('str'), cat_name = 'Predicted cluster', X = X2D_scaled)
+    df_pred = make_sorted_df(cat = clusters_pred_str, cat_name = 'Predicted cluster', X = X2D_scaled)
     fig01 = make_scatter_plot(df = df_true, cat_name = 'True class')
     fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster')
 
+
+    #-------------------------------------------
+    # show plots 
     c01, c02 = st.columns(2)
     with c01:
         st.text("Ground truth")
         st.plotly_chart(fig01, use_container_width=False, theme=None)
+        st.text("Plots are zoomable and categories can be selectively hidden/shown by click in legend.")
     with c02:
         st.text("Predicted clusters")             
         st.plotly_chart(fig02, use_container_width=False, theme=None)
 
 
-
-
-    # fig01 = px.scatter(
-    #     data_frame = df_true,
-    #     x = 'Dim-1',
-    #     y = 'Dim-2',
-    #     color = 'True class',
-    #     template='plotly_dark',
-    #     height=1000,
-    #     width =1000,
-    #     color_discrete_sequence = px.colors.qualitative.Light24,
-    #     )
-   
-    # # plot predicted clusters 
-    # fig02 = px.scatter(
-    #     data_frame = df_pred,
-    #     x = 'Dim-1',
-    #     y = 'Dim-2',
-    #     color = 'Predicted cluster',
-    #     template='plotly_dark',
-    #     height=1000,
-    #     width =1000,
-    #     color_discrete_sequence = px.colors.qualitative.Light24,
-    #     )
-
-
-    # _ = fig01.update_layout(margin=dict(t=15, b=500, l=15, r=15))
-    # _ = fig02.update_layout(margin=dict(t=15, b=500, l=15, r=15))
-    # _ = fig01.update_layout(legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="left", x=0.0))
-    # _ = fig02.update_layout(legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="left", x=0.0))
-    # _ = fig01.update_layout(showlegend=True,legend_title=None)
-    # _ = fig02.update_layout(showlegend=True,legend_title=None)
-
-    
-
-    # df_true = pd.DataFrame({ 'True class' : ss['dapar']['clusters_true'], 'Dim-1' : X2D_scaled[:,0] , 'Dim-2' : X2D_scaled[:,1]})
-    # df_true = df_true.sort_values(by='True class')
-
-    # df_pred = pd.DataFrame({ 'Predicted cluster' : clusters_pred.astype('str'), 'Dim-1' : X2D_scaled[:,0] , 'Dim-2' : X2D_scaled[:,1]})
-    # df_pred = df_pred.sort_values(by='Predicted cluster')
-
-    # st.dataframe(df_true)
-    # st.dataframe(df_pred)
-
+  
 
     # v_measure_score(labels_true = clusters_true , labels_pred = clusters_pred, beta=1.0)
     # rand_score(labels_true = clusters_true , labels_pred = clusters_pred)
 
 
-
-    # @st.cache_data
-    # def make_scatter_plot(df, cat_name):
-    #     fig = px.scatter(
-    #         data_frame = df,
-    #         x = 'Dim-1',
-    #         y = 'Dim-2',
-    #         color = cat_name,
-    #         template='plotly_dark',
-    #         height=1000,
-    #         width =1000,
-    #         color_discrete_sequence = px.colors.qualitative.Light24,
-    #         )
-    #     _ = fig.update_layout(margin=dict(t=15, b=500, l=15, r=15))
-    #     _ = fig.update_layout(legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="left", x=0.0))
-    #     _ = fig.update_layout(showlegend=True,legend_title=None)
-    #     return(fig)
-    
