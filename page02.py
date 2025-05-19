@@ -106,6 +106,10 @@ if len(ss['dapar']['X']) > 0 :
         st.text("Noisy samples, i.e. those that were not assigned to a cluster, are given the label '-01'") 
         st.text("The numerical value of Cluster IDs is arbitrary and cannot be automatically linked to a true class, you have to assess the match graphically or with clustering metrics") 
         st.text("v_measure and rand_score are between 0.0 and 1.0")  
+        st.markdown('''UMAP is a [stochastic algorithm](https://umap-learn.readthedocs.io/en/latest/reproducibility.html) and I intentionally did not fix a random seed -> 
+                    you will observe small differences between runs''')
+
+        
 
      
         
