@@ -27,9 +27,6 @@ def update_ss(kname, ssname):
     """
     ss["upar"][ssname] = ss[kname]      
 
-
-
-
 @st.cache_data
 def dim_reduction_for_2D_plot(X, n_neigh):
     """
@@ -70,3 +67,29 @@ def perform_dbscan_clusterin(X, eps, min_samples):
     clusters_pred = clu.fit_predict(X)
     return(clusters_pred)
 
+@st.cache_data
+def make_sorted_df(cat, cat_name, X):
+    df = pd.DataFrame({ cat_name : cat, 'Dim-1' : X[:,0] , 'Dim-2' : X[:,1]})
+    df = df.sort_values(by=cat_name)
+    return(df)
+
+@st.cache_data
+def make_scatter_plot(df, cat_name):
+    fig = px.scatter(
+        data_frame = df,
+        x = 'Dim-1',
+        y = 'Dim-2',
+        color = cat_name,
+        template='plotly_dark',
+        height=1000,
+        width =1000,
+        color_discrete_sequence = px.colors.qualitative.Light24,
+        )
+    _ = fig.update_layout(margin=dict(t=15, b=500, l=15, r=15))
+    _ = fig.update_layout(legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="left", x=0.0))
+    _ = fig.update_layout(showlegend=True,legend_title=None)
+    return(fig)
+
+
+
+    

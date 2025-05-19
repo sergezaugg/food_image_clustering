@@ -25,7 +25,7 @@ if 'upar' not in ss:
         'dbscan_min_samples' : 10,
         }
 
-p01 = st.Page("page01.py", title="Activate data")
+p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 
 pg = st.navigation([p02, p01])
