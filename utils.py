@@ -16,7 +16,7 @@ from sklearn.cluster import DBSCAN
 # from sklearn.metrics.cluster import contingency_matrix
 
 
-
+# fit_transform(X, y=None, ensure_all_finite=True, **kwargs)
 
 
 def update_ss(kname, ssname):
@@ -41,7 +41,7 @@ def dim_reduction_for_2D_plot(X, n_neigh):
         metric = 'euclidean',
         n_jobs = -1
         )
-    X2D_trans = reducer.fit_transform(X)
+    X2D_trans = reducer.fit_transform(X, ensure_all_finite=True)
     scaler = StandardScaler()
     X2D_scaled = scaler.fit_transform(X2D_trans)
     return(X2D_scaled)
@@ -57,7 +57,7 @@ def dim_reduction_for_clustering(X, n_neigh, n_dims_red):
         metric = 'euclidean',
         n_jobs = -1
         )
-    X_trans = reducer.fit_transform(X)
+    X_trans = reducer.fit_transform(X, ensure_all_finite=True)
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X_trans)
     return(X_scaled)

@@ -28,7 +28,7 @@ if 'upar' not in ss:
 p01 = st.Page("page01.py", title="Activate data")
 p02 = st.Page("page02.py", title="Analyse")
 
-pg = st.navigation([p01, p02])
+pg = st.navigation([p02, p01])
 
 pg.run()
 

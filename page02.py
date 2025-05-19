@@ -8,38 +8,42 @@ import streamlit as st
 from streamlit import session_state as ss
 import numpy as np
 import gc
-# import pandas as pd 
+import pandas as pd 
 import plotly.express as px
-# import umap.umap_ as umap
-# from sklearn.preprocessing import StandardScaler
-# from sklearn.cluster import DBSCAN
 from sklearn.metrics import v_measure_score, rand_score
 from sklearn.metrics.cluster import contingency_matrix
 from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
-# import kagglehub
+import kagglehub
 gc.collect()
 
 
 cols = st.columns(5)
 
 
-# render page only if data is available 
+# First, get data or local path to data
 if ss['dapar']['feat_path'] == 'empty' :
-    st.text("First activate data (navigation bar left)")
+    st.text("Preparing data ...")
+    # download the data from kaggle (https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
+    kgl_ds = "sezaugg/" + 'food-classification-features-v01' # link on Kaggle , is fixed
+    kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
+    ss['dapar']['feat_path'] = kgl_path
+    st.rerun()
+
+
+
 else :
     with cols[0]:
         with st.form("form01", border=False):
-                    featu_path = st.selectbox("Select extracted features", options = os.listdir(ss['dapar']['feat_path']))
-                    submitted_1 = st.form_submit_button("Activate", type = "primary")   
-                    if submitted_1:    
-                        npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
-                        ss['dapar']['X'] = npzfile['X']
-                        ss['dapar']['clusters_true'] = npzfile['Y']
+            featu_path = st.selectbox("Select extracted features", options = os.listdir(ss['dapar']['feat_path']))
+            submitted_1 = st.form_submit_button("Choose", type = "primary")   
+            if submitted_1:    
+                npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
+                ss['dapar']['X'] = npzfile['X']
+                ss['dapar']['clusters_true'] = npzfile['Y']
 
 
 if len(ss['dapar']['X']) > 0 :
-    # st.write("Shape of feature array", ss['dapar']['X'].shape)
-    # st.write(pd.Series(ss['dapar']['clusters_true']).value_counts())
+   
     with cols[1]:
         _ = st.select_slider(label = "UMAP dim", options=[2,4,8,16,32,64,128], 
                             key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
@@ -58,61 +62,68 @@ if len(ss['dapar']['X']) > 0 :
 
     #-------------------------------------------
     # (1) Load data  
-    X = ss['dapar']['X']
-    clusters_true = ss['dapar']['clusters_true']
+    # X = ss['dapar']['X']
+    # clusters_true = ss['dapar']['clusters_true']
     #-------------------------------------------
     X2D_scaled = dim_reduction_for_2D_plot(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'])
     X_scaled = dim_reduction_for_clustering(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'], n_dims_red = ss['upar']['umap_n_dims_red'])
     clusters_pred = perform_dbscan_clusterin(X = X_scaled, eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
 
 
+  
 
-    # pd.Series(clusters_pred).value_counts()
+    df_true = pd.DataFrame({ 'True class' : ss['dapar']['clusters_true'], 'Dim-1' : X2D_scaled[:,0] , 'Dim-2' : X2D_scaled[:,1]})
+    df_true = df_true.sort_values(by='True class')
+
+    df_pred = pd.DataFrame({ 'Predicted cluster' : clusters_pred.astype('str'), 'Dim-1' : X2D_scaled[:,0] , 'Dim-2' : X2D_scaled[:,1]})
+    df_pred = df_pred.sort_values(by='Predicted cluster')
+
+    # st.dataframe(df_true)
+
+
+  
     
-
-
-
-
-
 
 
 
     #-------------------------------------------
     # (4) Compare  
 
-    v_measure_score(labels_true = clusters_true , labels_pred = clusters_pred, beta=1.0)
-    rand_score(labels_true = clusters_true , labels_pred = clusters_pred)
+    # v_measure_score(labels_true = clusters_true , labels_pred = clusters_pred, beta=1.0)
+    # rand_score(labels_true = clusters_true , labels_pred = clusters_pred)
   
     # plot ground truth
     fig01 = px.scatter(
-        x =X2D_scaled[:,0],
-        y =X2D_scaled[:,1],
-        color = clusters_true,
-        template='plotly_dark',
-        height=1000,
-        width =1000,
-        color_discrete_sequence = px.colors.qualitative.Light24
-        )
-   
-    # fig01.show()
-
-    # plot predicted clusters 
-    fig02 = px.scatter(
-        x =X2D_scaled[:,0],
-        y =X2D_scaled[:,1],
-        color = clusters_pred.astype('str'),
+        data_frame = df_true,
+        x = 'Dim-1',
+        y = 'Dim-2',
+        color = 'True class',
         template='plotly_dark',
         height=1000,
         width =1000,
         color_discrete_sequence = px.colors.qualitative.Light24,
         )
+   
+    # plot predicted clusters 
+    fig02 = px.scatter(
+        data_frame = df_pred,
+        x = 'Dim-1',
+        y = 'Dim-2',
+        color = 'Predicted cluster',
+        template='plotly_dark',
+        height=1000,
+        width =1000,
+        color_discrete_sequence = px.colors.qualitative.Light24,
+        )
+    
 
     _ = fig01.update_layout(margin=dict(t=15, b=500, l=15, r=15))
     _ = fig02.update_layout(margin=dict(t=15, b=500, l=15, r=15))
     _ = fig01.update_layout(legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="left", x=0.0))
     _ = fig02.update_layout(legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="left", x=0.0))
 
-    # fig02.show()
+    _ = fig01.update_layout(showlegend=True,legend_title=None)
+    _ = fig02.update_layout(showlegend=True,legend_title=None)
 
 
     c01, c02 = st.columns(2)
