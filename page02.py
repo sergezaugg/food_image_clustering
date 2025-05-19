@@ -14,20 +14,21 @@ from sklearn.metrics import v_measure_score, rand_score
 from sklearn.metrics.cluster import contingency_matrix
 from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
 from utils import make_sorted_df, make_scatter_plot
-import kagglehub
+# import kagglehub
 gc.collect()
 
 cols = st.columns([0.4, 0.3, 0.3, 0.3])
 
 # First, get data or local path to data
 if ss['dapar']['feat_path'] == 'empty' :
-    st.text("Preparing data ...")
-    # download the data from kaggle (https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
-    kgl_ds = "sezaugg/" + 'food-classification-features-v01' # link on Kaggle , is fixed
-    kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
-    ss['dapar']['feat_path'] = kgl_path
-    ss['upar']['model_list'] = os.listdir(ss['dapar']['feat_path'])
-    st.rerun()
+    st.text("Please select a dataset first (see left)")
+    # st.text("Preparing data ...")
+    # # download the data from kaggle (https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
+    # kgl_ds = "sezaugg/" + 'food-classification-features-v01' # link on Kaggle , is fixed
+    # kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
+    # ss['dapar']['feat_path'] = kgl_path
+    # ss['upar']['model_list'] = os.listdir(ss['dapar']['feat_path'])
+    # st.rerun()
 
 # main dashboard
 else :
