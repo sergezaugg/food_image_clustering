@@ -18,8 +18,8 @@ import kagglehub
 gc.collect()
 
 
-cols = st.columns([0.4, 0.3, 0.3, 0.3])
 
+cols = st.columns([0.4, 0.3, 0.3, 0.3])
 
 # First, get data or local path to data
 if ss['dapar']['feat_path'] == 'empty' :
@@ -28,6 +28,7 @@ if ss['dapar']['feat_path'] == 'empty' :
     kgl_ds = "sezaugg/" + 'food-classification-features-v01' # link on Kaggle , is fixed
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
+    ss['upar']['model_list'] = os.listdir(ss['dapar']['feat_path'])
     st.rerun()
 
 # main dashboard
@@ -35,12 +36,17 @@ else :
     with cols[0]:
         with st.container(border=True, height = 230):   
             with st.form("form01", border=False):
-                featu_path = st.selectbox("Select data with extracted features", options = os.listdir(ss['dapar']['feat_path']))
+                featu_path = st.selectbox("Select data with extracted features", options = ss['upar']['model_list'], index=ss['upar']['current_model_index'])
                 submitted_1 = st.form_submit_button("Confirm", type = "primary")   
                 if submitted_1:    
                     npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
                     ss['dapar']['X'] = npzfile['X']
                     ss['dapar']['clusters_true'] = npzfile['Y']
+                    # update index for satefulness of the selectbox
+                    ss['upar']['current_model_index'] =  ss['upar']['model_list'].index(featu_path)
+                    st.rerun()
+            st.text("")        
+            st.write('Active: ', featu_path)        
 
 
 if len(ss['dapar']['X']) > 0 :
@@ -88,7 +94,6 @@ if len(ss['dapar']['X']) > 0 :
             st.write("v_measure_score", round(met_v_measu,2))
             st.write("rand_score", round(met_rand_sc,2))
    
-
     #-------------------------------------------
     # show plots 
     c01, c02 = st.columns(2)
@@ -97,7 +102,6 @@ if len(ss['dapar']['X']) > 0 :
         
     with c02:
         st.plotly_chart(fig02, use_container_width=False, theme=None)
-
 
 
     with st.container(border=True):   
