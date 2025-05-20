@@ -17,7 +17,7 @@ gc.collect()
 cols = st.columns([0.1, 0.35, 0.1, 0.3, 0.25])
 
 # Handle start-up of app
-if ss['dapar']['feat_path'] == 'empty' :
+if ss['dapar']['dataset_name'] == 'empty' :
     st.page_link("page03.py", label="Click to select a dataset")
 else :
     if len(ss['dapar']['X']) <= 0:

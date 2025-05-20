@@ -37,7 +37,7 @@ else :
                     ss['dapar']['dataset_name']   = npz_finame 
                     ss['dapar']['X']              = ss['dapar']['npdata'][npz_finame]['X']  
                     ss['dapar']['clusters_true']  = ss['dapar']['npdata'][npz_finame]['clusters_true'] 
-                    st.rerun()  # mainly to update sidebar       
-        with st.container(border=True): 
-            st.write("Selected: ", npz_finame)     
+                    st.rerun()  # mainly to update sidebar   
+        st.page_link("page02.py", label="Now let's analyse this data")                
+       
       
