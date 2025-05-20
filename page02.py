@@ -43,7 +43,7 @@ if len(ss['dapar']['X']) > 0 :
             with ca1:
                 ss['upar']['skip_umap'] = st.checkbox("Skip UMAP")
             with ca2:
-                _ = st.select_slider(label = "UMAP reduce dim", options=[2,4,8,16,32,64,128], disabled = ss['upar']['skip_umap'],
+                _ = st.select_slider(label = "UMAP reduce dim (large values are slow)", options=[2,4,8,16,32,64,128, 256, 512, 1000], disabled = ss['upar']['skip_umap'],
                                     key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
                 _ = st.select_slider(label = "UMAP nb neighbors", options=[2,5,10,15,20,30,40,50,75,100], disabled = ss['upar']['skip_umap'], 
                                 key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])   
@@ -105,14 +105,7 @@ if len(ss['dapar']['X']) > 0 :
 
     
 
-    with st.container(border=True):   
-        st.text("Plots are zoomable and categories can be selectively hidden/shown by click in legend.") 
-        st.text("Noisy samples, i.e. those that were not assigned to a cluster, are given the label '-01'") 
-        st.text("The numerical value of Cluster IDs is arbitrary and cannot be automatically linked to a true class, you have to assess the match graphically or with clustering metrics")
-        st.text("adjusted_rand_score is a consensus measures between true and predicted clusters, values in [-0.5, 1]")  
-        st.text("adjusted_mutual_info_score (AMI) is a consensus measures between true and predicted clusters, values in [~0, 1]")  
-        st.markdown('''UMAP is a [stochastic algorithm](https://umap-learn.readthedocs.io/en/latest/reproducibility.html) and I intentionally did not fix a random seed -> 
-                    you will observe small differences between runs''')
+  
 
         
      

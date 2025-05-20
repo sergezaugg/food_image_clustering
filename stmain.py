@@ -20,7 +20,7 @@ if 'dapar' not in ss:
 if 'upar' not in ss:
     ss['upar'] = {
         'umap_n_neighbors' : 10,
-        'umap_n_dims_red' : 32,
+        'umap_n_dims_red' : 16,
         'skip_umap' : False,
         'dbscan_eps' : 0.501,
         'dbscan_min_samples' : 10,
@@ -39,6 +39,7 @@ with st.sidebar:
     st.text("(3) Explore metrics & plots")
     st.markdown(":bulb: Plots are zoomable!")
     st.markdown(":bulb: Hide cats by click in legend!")
+    st.markdown(":bulb: ID '-01' = not assigned to cluster") 
     st.markdown(":information_source: UMAP dim for plots always = 2")
     st.markdown(":information_source: UMAP dim for DBCAN can be > 2")
     st.title("")
@@ -46,14 +47,11 @@ with st.sidebar:
     st.text("UMAP can take a few minutes")
     st.text("DBSCAN takes a few seconds")
     st.title(""); 
-    # st.markdown(''':gray[RELATED TOPICS]''')
-    # st.page_link("https://ml-performance-metrics.streamlit.app/", label=":gray[ml-performance-metrics]")
-    # st.page_link("https://purenoisefeatures.streamlit.app", label=":gray[impact of pure-noise-features]")
 
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
 pss = st.Page("page_ss.py", title="Session State")
-pg = st.navigation([p03, p02, p01, pss])
+pg = st.navigation([p03, p02, p01])
 pg.run()
 
