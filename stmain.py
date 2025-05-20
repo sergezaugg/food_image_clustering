@@ -43,16 +43,17 @@ with st.sidebar:
     st.markdown(":information_source: UMAP dim for DBCAN can be > 2")
     st.title("")
     st.markdown(''':blue[COMPUTATION SPEED]''')
-    st.text("UMAP run can take a few minutes")
-    st.text("DBSCAN run takes a few seconds")
+    st.text("UMAP can take a few minutes")
+    st.text("DBSCAN takes a few seconds")
     st.title(""); 
-    st.markdown(''':gray[RELATED TOPICS]''')
-    st.page_link("https://ml-performance-metrics.streamlit.app/", label=":gray[ml-performance-metrics]")
-    st.page_link("https://purenoisefeatures.streamlit.app", label=":gray[impact of pure-noise-features]")
+    # st.markdown(''':gray[RELATED TOPICS]''')
+    # st.page_link("https://ml-performance-metrics.streamlit.app/", label=":gray[ml-performance-metrics]")
+    # st.page_link("https://purenoisefeatures.streamlit.app", label=":gray[impact of pure-noise-features]")
 
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
-pg = st.navigation([p03, p02, p01])
+pss = st.Page("page_ss.py", title="Session State")
+pg = st.navigation([p03, p02, p01, pss])
 pg.run()
 

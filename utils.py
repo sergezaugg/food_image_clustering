@@ -23,15 +23,14 @@ def update_ss(kname, ssname):
     ss["upar"][ssname] = ss[kname]      
 
 
-# @st.cache_data
-# def load_data_from_npz(model_index): 
-#     """
-#     """ 
-#     featu_path = ss['upar']['model_list'][model_index] 
-#     npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
-#     ss['dapar']['X'] = npzfile['X']
-#     ss['dapar']['clusters_true'] = npzfile['Y'] 
-#     return(featu_path)
+@st.cache_data
+def load_data_from_npz_into_ss(featu_path): 
+    """
+    """ 
+    npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
+    ss['dapar']['X'] = npzfile['X']
+    ss['dapar']['clusters_true'] = npzfile['Y'] 
+    return(featu_path)
 
 @st.cache_data
 def dim_reduction_for_2D_plot(X, n_neigh):

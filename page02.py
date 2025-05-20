@@ -9,34 +9,33 @@ from streamlit import session_state as ss
 import numpy as np
 import pandas as pd
 import gc
-# import kagglehub
 from sklearn.metrics import v_measure_score, adjusted_rand_score, adjusted_mutual_info_score
 from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
-from utils import make_sorted_df, make_scatter_plot
+from utils import make_sorted_df, make_scatter_plot, load_data_from_npz_into_ss
 gc.collect()
 
 cols = st.columns([0.1, 0.35, 0.1, 0.3, 0.25])
 
-# Handle state on app startup
+# Handle start-up of app
 if ss['dapar']['feat_path'] == 'empty' :
     st.page_link("page03.py", label="Click to select a dataset")
 else :
-    # featu_path = load_data_from_npz(model_index = ss['upar']['current_model_index'])  
-
-    # featu_path = ss['upar']['model_list'][ss['upar']['current_model_index']] 
-
     if len(ss['dapar']['X']) <= 0:
-        st.info("Please select a dataset")
-    else:  
-        with cols[0]: 
-            with st.container(border=True, height = 250):  
-                st.text("Dimension") 
-                st.info(str(ss['dapar']['X'].shape[0]) + '  imgs')
-                st.info(str(ss['dapar']['X'].shape[1]) + '  feats') 
-                
- 
+        featu_path = ss['upar']['model_list'][ss['upar']['current_model_index']]
+        npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
+        ss['dapar']['X'] = npzfile['X']
+        ss['dapar']['clusters_true'] = npzfile['Y'] 
+        # update index for statefulness of the selectbox
+        ss['upar']['current_model_index'] =  ss['upar']['model_list'].index(featu_path) 
+
 # main dashboard
 if len(ss['dapar']['X']) > 0 :
+
+    with cols[0]: 
+        with st.container(border=True, height = 250):  
+            st.text("Dimension") 
+            st.info(str(ss['dapar']['X'].shape[0]) + '  imgs')
+            st.info(str(ss['dapar']['X'].shape[1]) + '  feats') 
    
     with cols[1]:
         with st.container(border=True, height = 250):   
@@ -97,10 +96,6 @@ if len(ss['dapar']['X']) > 0 :
             coco[1].metric("Adj. Mutual Info Score " , format(round(met_amui_sc,2), '03.2f'))
             coco[1].metric("Adj. Rand Score " ,        format(round(met_rand_sc,2), '03.2f'))
    
-
-
-
-    #-------------------------------------------
     # show plots 
     c01, c02 = st.columns(2)
     with c01:
