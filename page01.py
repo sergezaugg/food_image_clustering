@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : Utility functions used by other scripts
+# Description : Info text
 #--------------------
 
 import streamlit as st
@@ -24,6 +24,7 @@ with c01:
             ### Data
             * Data from Food Classification dataset published on Kaggle.
             * https://www.kaggle.com/datasets/bjoernjostein/food-classification
+            * Original dataset is here https://www.aicrowd.com/challenges/kiit-ai-mini-blitz/problems/foodch        
             * Over 9300 hand-annotated images with 61 classes
 
             ### Feature extraction (image to vector)

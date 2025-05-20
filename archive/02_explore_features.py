@@ -95,7 +95,7 @@ pd.Series(clusters_pred).value_counts()
 clusters_pred.shape
 clusters_true.shape
 v_measure_score(labels_true = clusters_true , labels_pred = clusters_pred, beta=1.0)
-rand_score(labels_true = clusters_true , labels_pred = clusters_pred)
+adjusted_rand_score(labels_true = clusters_true , labels_pred = clusters_pred)
 # z = contingency_matrix(labels_true = clusters_true , labels_pred = clusters_pred)
 # fig = px.imshow(z, text_auto=True)
 # fig.show()

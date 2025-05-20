@@ -1,6 +1,7 @@
-
-
-
+#--------------------             
+# Author : Serge Zaugg
+# Description : Computation steps defined as functions here
+#--------------------
 
 import os
 import streamlit as st
@@ -12,12 +13,6 @@ import plotly.express as px
 import umap.umap_ as umap
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import DBSCAN
-# from sklearn.metrics import v_measure_score, rand_score
-# from sklearn.metrics.cluster import contingency_matrix
-
-
-# fit_transform(X, y=None, ensure_all_finite=True, **kwargs)
-
 
 def update_ss(kname, ssname):
     """
@@ -26,6 +21,17 @@ def update_ss(kname, ssname):
     ssname : key name of variable in session state (ss)
     """
     ss["upar"][ssname] = ss[kname]      
+
+
+@st.cache_data
+def load_data_from_npz(model_index): 
+    """
+    """ 
+    featu_path = ss['upar']['model_list'][model_index] 
+    npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
+    ss['dapar']['X'] = npzfile['X']
+    ss['dapar']['clusters_true'] = npzfile['Y'] 
+    return(featu_path)
 
 @st.cache_data
 def dim_reduction_for_2D_plot(X, n_neigh):
@@ -44,20 +50,24 @@ def dim_reduction_for_2D_plot(X, n_neigh):
     return(X2D_scaled)
 
 @st.cache_data
-def dim_reduction_for_clustering(X, n_neigh, n_dims_red):
+def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
     """
     UMAP dim reduction for clustering
     """
-    reducer = umap.UMAP(
-        n_neighbors = n_neigh, 
-        n_components = n_dims_red, 
-        metric = 'euclidean',
-        n_jobs = -1
-        )
-    X_trans = reducer.fit_transform(X, ensure_all_finite=True)
     scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X_trans)
-    return(X_scaled)
+    if skip_umap == True:
+        X_scaled = scaler.fit_transform(X)
+        return(X_scaled)
+    else:    
+        reducer = umap.UMAP(
+            n_neighbors = n_neigh, 
+            n_components = n_dims_red, 
+            metric = 'euclidean',
+            n_jobs = -1
+            )
+        X_trans = reducer.fit_transform(X, ensure_all_finite=True)
+        X_scaled = scaler.fit_transform(X_trans)
+        return(X_scaled)
 
 @st.cache_data
 def perform_dbscan_clusterin(X, eps, min_samples):
