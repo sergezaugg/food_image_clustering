@@ -8,6 +8,9 @@ import streamlit as st
 from streamlit import session_state as ss
 import numpy as np
 import kagglehub
+import gc
+gc.collect()
+
 
 c00, c01  = st.columns([0.1, 0.18])
 
@@ -25,6 +28,7 @@ if ss['dapar']['feat_path'] == 'empty' :
         npzfile = np.load(npzfile_full_path)
         di[npz_finame] = {'X' : npzfile['X'] , 'clusters_true' : npzfile['Y'] }
     ss['dapar']['npdata'] = di
+    gc.collect()
     st.rerun()
 # Then, choose a dataset
 else :
@@ -39,5 +43,6 @@ else :
                     ss['dapar']['clusters_true']  = ss['dapar']['npdata'][npz_finame]['clusters_true'] 
                     st.rerun()  # mainly to update sidebar   
         st.page_link("page02.py", label="Now let's analyse this data")                
-       
+    gc.collect()
+   
       

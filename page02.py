@@ -48,6 +48,7 @@ if len(ss['dapar']['X']) > 0 :
     X2D_scaled = dim_reduction_for_2D_plot(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'])
     X_scaled = dim_reduction_for_clustering(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'], n_dims_red = ss['upar']['umap_n_dims_red'], 
                                             skip_umap = ss['upar']['skip_umap'])
+    gc.collect()
     #-------------------------------------------
 
     with cols[2]:
@@ -72,8 +73,10 @@ if len(ss['dapar']['X']) > 0 :
     clusters_pred_str = np.array([format(a, '03d') for a in clusters_pred])
     df_true = make_sorted_df(cat = ss['dapar']['clusters_true'], cat_name = 'True class', X = X2D_scaled)
     df_pred = make_sorted_df(cat = clusters_pred_str, cat_name = 'Predicted cluster', X = X2D_scaled)
+    gc.collect()
     fig01 = make_scatter_plot(df = df_true, cat_name = 'True class', title = "Ground truth")
     fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters")
+    gc.collect()
     # metrics 
     met_amui_sc = adjusted_mutual_info_score(labels_true = ss['dapar']['clusters_true'] , labels_pred = clusters_pred_str)
     met_rand_sc =        adjusted_rand_score(labels_true = ss['dapar']['clusters_true'] , labels_pred = clusters_pred_str)
@@ -98,8 +101,7 @@ if len(ss['dapar']['X']) > 0 :
     with c02:
         st.plotly_chart(fig02, use_container_width=False, theme=None)
 
-    
-
+    gc.collect()
   
 
         
