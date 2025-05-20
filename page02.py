@@ -41,9 +41,9 @@ if len(ss['dapar']['X']) > 0 :
         with st.container(border=True, height = 250):   
             ca1, ca2 = st.columns([0.15, 0.8])
             with ca1:
-                ss['upar']['skip_umap'] = st.checkbox("Skip UMAP")
+                _ = st.checkbox("Skip UMAP", key='k_skip_umap', value = ss['upar']["skip_umap"], on_change=update_ss, args=['k_skip_umap', 'skip_umap'])
             with ca2:
-                _ = st.select_slider(label = "UMAP reduce dim (large values are slow)", options=[2,4,8,16,32,64,128, 256, 512, 1000], disabled = ss['upar']['skip_umap'],
+                _ = st.select_slider(label = "UMAP reduce dim (large values are slow)", options=[2,4,8,16,32,64,128,], disabled = ss['upar']['skip_umap'],
                                     key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
                 _ = st.select_slider(label = "UMAP nb neighbors", options=[2,5,10,15,20,30,40,50,75,100], disabled = ss['upar']['skip_umap'], 
                                 key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])   
