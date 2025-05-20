@@ -29,7 +29,9 @@ if ss['dapar']['feat_path'] == 'empty' :
 else :
     featu_path = load_data_from_npz(model_index = ss['upar']['current_model_index'])  
     with cols[0]:
-        if len(ss['dapar']['X']) > 0:
+        if len(ss['dapar']['X']) <= 0:
+            st.info("Please select a dataset")
+        else:   
             with st.container(border=True, height = 250):  
                 st.text("Dimension") 
                 st.info(str(ss['dapar']['X'].shape[0]) + '  imgs')
@@ -65,7 +67,7 @@ if len(ss['dapar']['X']) > 0 :
 
     with cols[3]:
         with st.container(border=True, height = 250): 
-            eps_options = (10.0**(np.arange(-3.0, 2.5, 0.1))).round(3)
+            eps_options = (10.0**(np.arange(-3.0, 2.5, 0.05))).round(3)
             _ = st.select_slider(label = "DBSCAN eps (good value depends on dims from UMAP)", options = eps_options, 
                                 key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
             _ = st.select_slider(label = "DBSCAN min samples", options=np.arange(5, 51, 5), 
@@ -95,9 +97,12 @@ if len(ss['dapar']['X']) > 0 :
             st.text("Clustering metrics")
             coco = st.columns(2)
             coco[0].metric("N assigned ", num_asigned)
-            coco[1].metric("Adj. Mutual Info Score " , round(met_amui_sc,2))
-            coco[1].metric("Adj. Rand Score " , round(met_rand_sc,2))
+            coco[1].metric("Adj. Mutual Info Score " , format(round(met_amui_sc,2), '03.2f'))
+            coco[1].metric("Adj. Rand Score " ,        format(round(met_rand_sc,2), '03.2f'))
    
+
+
+
     #-------------------------------------------
     # show plots 
     c01, c02 = st.columns(2)

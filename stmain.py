@@ -38,6 +38,8 @@ with st.sidebar:
     st.text("(3) Explore metrics & plots")
     st.markdown(":bulb: Plots are zoomable!")
     st.markdown(":bulb: Hide cats by click in legend!")
+    st.markdown(":information_source: UMAP dim for plots always = 2")
+    st.markdown(":information_source: UMAP dim for DBCAN can be > 2")
 
 
 
@@ -45,7 +47,7 @@ with st.sidebar:
     st.markdown(''':blue[COMPUTATION SPEED]''')
     st.text("UMAP run can take a few minutes")
     st.text("DBSCAN run takes a few seconds")
-    st.title(""); st.title("")
+    st.title(""); 
     st.markdown(''':gray[RELATED TOPICS]''')
     st.page_link("https://ml-performance-metrics.streamlit.app/", label=":gray[ml-performance-metrics]")
     st.page_link("https://purenoisefeatures.streamlit.app", label=":gray[impact of pure-noise-features]")
