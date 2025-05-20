@@ -15,7 +15,7 @@ from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perfo
 from utils import make_sorted_df, make_scatter_plot, load_data_from_npz
 gc.collect()
 
-cols = st.columns([0.1, 0.35, 0.1, 0.3, 0.2])
+cols = st.columns([0.1, 0.35, 0.1, 0.3, 0.25])
 
 # Handle state on app startup
 if ss['dapar']['feat_path'] == 'empty' :
@@ -29,20 +29,21 @@ if ss['dapar']['feat_path'] == 'empty' :
 else :
     featu_path = load_data_from_npz(model_index = ss['upar']['current_model_index'])  
     with cols[0]:
-        with st.container(border=True, height = 230):  
-            st.text("Dimension") 
-            st.info(ss['dapar']['X'].shape)   
+        if len(ss['dapar']['X']) > 0:
+            with st.container(border=True, height = 250):  
+                st.text("Dimension") 
+                st.info(str(ss['dapar']['X'].shape[0]) + '  imgs')
+                st.info(str(ss['dapar']['X'].shape[1]) + '  feats') 
                 
 
 # main dashboard
 if len(ss['dapar']['X']) > 0 :
    
     with cols[1]:
-        with st.container(border=True, height = 230):   
+        with st.container(border=True, height = 250):   
             ca1, ca2 = st.columns([0.15, 0.8])
             with ca1:
                 ss['upar']['skip_umap'] = st.checkbox("Skip UMAP")
-                # st.write(ss['upar']['skip_umap'])
             with ca2:
                 _ = st.select_slider(label = "UMAP reduce dim", options=[2,4,8,16,32,64,128], disabled = ss['upar']['skip_umap'],
                                     key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
@@ -57,13 +58,14 @@ if len(ss['dapar']['X']) > 0 :
     #-------------------------------------------
 
     with cols[2]:
-        with st.container(border=True, height = 230): 
+        with st.container(border=True, height = 250): 
             st.text("Dimension")  
-            st.info(X_scaled.shape)
+            st.info(str(X_scaled.shape[0]) + '  imgs')
+            st.info(str(X_scaled.shape[1]) + '  feats')
 
     with cols[3]:
-        with st.container(border=True, height = 230): 
-            eps_options = (10.0**(np.arange(-3, 2,0.1))).round(3)
+        with st.container(border=True, height = 250): 
+            eps_options = (10.0**(np.arange(-3.0, 2.5, 0.1))).round(3)
             _ = st.select_slider(label = "DBSCAN eps (good value depends on dims from UMAP)", options = eps_options, 
                                 key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
             _ = st.select_slider(label = "DBSCAN min samples", options=np.arange(5, 51, 5), 
@@ -73,7 +75,7 @@ if len(ss['dapar']['X']) > 0 :
     # computational block 2 (st-cached)
     clusters_pred = perform_dbscan_clusterin(X = X_scaled, eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
     num_unasigned = (clusters_pred == -1).sum()
-    num_total = len(clusters_pred)
+    num_asigned = len(clusters_pred) - num_unasigned
     clusters_pred_str = np.array([format(a, '03d') for a in clusters_pred])
     df_true = make_sorted_df(cat = ss['dapar']['clusters_true'], cat_name = 'True class', X = X2D_scaled)
     df_pred = make_sorted_df(cat = clusters_pred_str, cat_name = 'Predicted cluster', X = X2D_scaled)
@@ -89,12 +91,12 @@ if len(ss['dapar']['X']) > 0 :
     #-------------------------------------------
 
     with cols[4]:
-        with st.container(border=True, height = 230): 
-            st.text("CLUSTERING METRICS:")
-            st.write("N_unassigned / N_tot", num_unasigned, " / ", num_total)
-            st.write("adj. mutual info score", round(met_amui_sc,2))
-            st.write("adj. rand score", round(met_rand_sc,2))
-            # st.write("v measure score", round(met_v_measu,2))
+        with st.container(border=True, height = 250): 
+            st.text("Clustering metrics")
+            coco = st.columns(2)
+            coco[0].metric("N assigned ", num_asigned)
+            coco[1].metric("Adj. Mutual Info Score " , round(met_amui_sc,2))
+            coco[1].metric("Adj. Rand Score " , round(met_rand_sc,2))
    
     #-------------------------------------------
     # show plots 
@@ -104,21 +106,19 @@ if len(ss['dapar']['X']) > 0 :
     with c02:
         st.plotly_chart(fig02, use_container_width=False, theme=None)
 
-    st.write("Selected dataset: ", featu_path)        
+    
 
     with st.container(border=True):   
-        st.text("INFO:") 
         st.text("Plots are zoomable and categories can be selectively hidden/shown by click in legend.") 
         st.text("Noisy samples, i.e. those that were not assigned to a cluster, are given the label '-01'") 
         st.text("The numerical value of Cluster IDs is arbitrary and cannot be automatically linked to a true class, you have to assess the match graphically or with clustering metrics")
-        st.text("v_measure values are are between in [0, 1]")  
         st.text("adjusted_rand_score is a consensus measures between true and predicted clusters, values in [-0.5, 1]")  
         st.text("adjusted_mutual_info_score (AMI) is a consensus measures between true and predicted clusters, values in [~0, 1]")  
         st.markdown('''UMAP is a [stochastic algorithm](https://umap-learn.readthedocs.io/en/latest/reproducibility.html) and I intentionally did not fix a random seed -> 
                     you will observe small differences between runs''')
 
         
-
+    st.info("Selected dataset: " + featu_path)        
      
         
   

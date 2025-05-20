@@ -31,12 +31,17 @@ if 'upar' not in ss:
 
 with st.sidebar:
     st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
-    st.text("v0.6.1")
+    st.text("v0.6.2")
     st.markdown(''':blue[QUICK GUIDE]''')
-    st.text("(1) Choose extracted features")
-    st.text("(2) Set UMAP params")
-    st.text("(3) Set DBSCAN params")
-    st.text("(4) Explore scatterplots")
+    st.text("(1) Set UMAP params")
+    st.text("(2) Set DBSCAN params")
+    st.text("(3) Explore metrics & plots")
+    st.markdown(":bulb: Plots are zoomable!")
+    st.markdown(":bulb: Hide cats by click in legend!")
+
+
+
+    st.title("")
     st.markdown(''':blue[COMPUTATION SPEED]''')
     st.text("UMAP run can take a few minutes")
     st.text("DBSCAN run takes a few seconds")
