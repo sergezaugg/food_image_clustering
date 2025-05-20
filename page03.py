@@ -22,17 +22,22 @@ if ss['dapar']['feat_path'] == 'empty' :
     st.rerun()
 else :
     with c00:
-        with st.container(border=True, height = 230):   
+        with st.container(border=True, height = 200):   
             with st.form("form01", border=False):
                 featu_path = st.selectbox("Select data with extracted features", options = ss['upar']['model_list'], index=ss['upar']['current_model_index'])
                 submitted_1 = st.form_submit_button("Confirm", type = "primary")   
                 if submitted_1: 
+
+                    # load npz into session state 
                     npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
                     ss['dapar']['X'] = npzfile['X']
                     ss['dapar']['clusters_true'] = npzfile['Y']
+
                     # update index for satefulness of the selectbox
                     ss['upar']['current_model_index'] =  ss['upar']['model_list'].index(featu_path)
                     st.rerun()
-            st.text("")        
-            st.write('Active: ', featu_path)        
+            # st.text("")        
+            # st.write('Active dataset: ', featu_path)            
+        with st.container(border=True):      
+            st.page_link("page02.py", label="Go to analysis page") 
       

@@ -9,35 +9,32 @@ from streamlit import session_state as ss
 import numpy as np
 import pandas as pd
 import gc
-import kagglehub
+# import kagglehub
 from sklearn.metrics import v_measure_score, adjusted_rand_score, adjusted_mutual_info_score
 from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
-from utils import make_sorted_df, make_scatter_plot, load_data_from_npz
+from utils import make_sorted_df, make_scatter_plot
 gc.collect()
 
 cols = st.columns([0.1, 0.35, 0.1, 0.3, 0.25])
 
 # Handle state on app startup
 if ss['dapar']['feat_path'] == 'empty' :
-    st.text("Preparing data ...")
-    # download the data from kaggle (https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
-    kgl_ds = "sezaugg/" + 'food-classification-features-v01' # link on Kaggle , is fixed
-    kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
-    ss['dapar']['feat_path'] = kgl_path
-    ss['upar']['model_list'] = os.listdir(ss['dapar']['feat_path'])
-    st.rerun()
+    st.page_link("page03.py", label="Click to select a dataset")
 else :
-    featu_path = load_data_from_npz(model_index = ss['upar']['current_model_index'])  
-    with cols[0]:
-        if len(ss['dapar']['X']) <= 0:
-            st.info("Please select a dataset")
-        else:   
+    # featu_path = load_data_from_npz(model_index = ss['upar']['current_model_index'])  
+
+    # featu_path = ss['upar']['model_list'][ss['upar']['current_model_index']] 
+
+    if len(ss['dapar']['X']) <= 0:
+        st.info("Please select a dataset")
+    else:  
+        with cols[0]: 
             with st.container(border=True, height = 250):  
                 st.text("Dimension") 
                 st.info(str(ss['dapar']['X'].shape[0]) + '  imgs')
                 st.info(str(ss['dapar']['X'].shape[1]) + '  feats') 
                 
-
+ 
 # main dashboard
 if len(ss['dapar']['X']) > 0 :
    
@@ -123,7 +120,6 @@ if len(ss['dapar']['X']) > 0 :
                     you will observe small differences between runs''')
 
         
-    st.info("Selected dataset: " + featu_path)        
      
         
   

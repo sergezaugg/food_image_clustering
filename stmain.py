@@ -28,8 +28,9 @@ if 'upar' not in ss:
         'current_model_index' : 2, 
         }
 
-
 with st.sidebar:
+    featu_path = ss['upar']['model_list'][ss['upar']['current_model_index']]
+    st.info(featu_path) 
     st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
     st.text("v0.6.2")
     st.markdown(''':blue[QUICK GUIDE]''')
@@ -40,9 +41,6 @@ with st.sidebar:
     st.markdown(":bulb: Hide cats by click in legend!")
     st.markdown(":information_source: UMAP dim for plots always = 2")
     st.markdown(":information_source: UMAP dim for DBCAN can be > 2")
-
-
-
     st.title("")
     st.markdown(''':blue[COMPUTATION SPEED]''')
     st.text("UMAP run can take a few minutes")
@@ -52,11 +50,9 @@ with st.sidebar:
     st.page_link("https://ml-performance-metrics.streamlit.app/", label=":gray[ml-performance-metrics]")
     st.page_link("https://purenoisefeatures.streamlit.app", label=":gray[impact of pure-noise-features]")
 
-
-
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
-pg = st.navigation([p02, p01, p03,])
+pg = st.navigation([p03, p02, p01])
 pg.run()
 
