@@ -12,7 +12,9 @@ st.set_page_config(layout="wide")
 
 if 'dapar' not in ss:
     ss['dapar'] = {
-        'feat_path' : 'empty', 
+        'feat_path' : 'empty',
+        'npdata' :   'empty',
+        'dataset_name' :  'empty',
         'X' : np.array([]),
         'clusters_true' : np.array([]),
         }
@@ -24,13 +26,10 @@ if 'upar' not in ss:
         'skip_umap' : False,
         'dbscan_eps' : 0.501,
         'dbscan_min_samples' : 10,
-        'model_list' : 'empty',
-        'current_model_index' : 2, 
         }
 
 with st.sidebar:
-    featu_path = ss['upar']['model_list'][ss['upar']['current_model_index']]
-    st.info(featu_path) 
+    st.info(ss['dapar']['dataset_name'])
     st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
     st.text("v0.6.2")
     st.markdown(''':blue[QUICK GUIDE]''')

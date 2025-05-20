@@ -11,7 +11,7 @@ import pandas as pd
 import gc
 from sklearn.metrics import v_measure_score, adjusted_rand_score, adjusted_mutual_info_score
 from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
-from utils import make_sorted_df, make_scatter_plot, load_data_from_npz_into_ss
+from utils import make_sorted_df, make_scatter_plot
 gc.collect()
 
 cols = st.columns([0.1, 0.35, 0.1, 0.3, 0.25])
@@ -21,13 +21,8 @@ if ss['dapar']['feat_path'] == 'empty' :
     st.page_link("page03.py", label="Click to select a dataset")
 else :
     if len(ss['dapar']['X']) <= 0:
-        featu_path = ss['upar']['model_list'][ss['upar']['current_model_index']]
-        npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
-        ss['dapar']['X'] = npzfile['X']
-        ss['dapar']['clusters_true'] = npzfile['Y'] 
-        # update index for statefulness of the selectbox
-        ss['upar']['current_model_index'] =  ss['upar']['model_list'].index(featu_path) 
-
+        st.text("haha")
+      
 # main dashboard
 if len(ss['dapar']['X']) > 0 :
 
