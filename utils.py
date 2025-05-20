@@ -24,10 +24,9 @@ def update_ss(kname, ssname):
 
 
 @st.cache_data
-def load_data_from_npz(model_index): 
+def load_data_from_npz_into_ss(featu_path): 
     """
     """ 
-    featu_path = ss['upar']['model_list'][model_index] 
     npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
     ss['dapar']['X'] = npzfile['X']
     ss['dapar']['clusters_true'] = npzfile['Y'] 

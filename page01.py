@@ -10,15 +10,12 @@ c00, c01  = st.columns([0.1, 0.18])
 
 with c00:
     with st.container(border=True) : 
-        # st.header("Data flow chart")
         st.image(image = "pics/data_flow_chart_2.png", caption="Data flow chart", width=None, 
                  use_column_width=None, clamp=False, channels="RGB", output_format="auto", use_container_width=False)
          
 with c01:
     with st.container(border=True) : 
         
-        # st.header("Summary")
-
         st.markdown(''' 
 
             ### Data
@@ -42,6 +39,14 @@ with c01:
             * Labels are only used to assess the quality of clustering
                     
             ''')
+        
+    with st.container(border=True):   
+        st.text("Noise samples, i.e. those that were not assigned to a cluster, are given the cluster ID '-01'") 
+        st.text("The numerical value of Cluster IDs is arbitrary and cannot be automatically linked to a true class, you have to assess the match graphically or with clustering metrics")
+        st.text("adjusted_rand_score is a consensus measures between true and predicted clusters, values in [-0.5, 1]")  
+        st.text("adjusted_mutual_info_score (AMI) is a consensus measures between true and predicted clusters, values in [~0, 1]")  
+        st.markdown('''UMAP is a [stochastic algorithm](https://umap-learn.readthedocs.io/en/latest/reproducibility.html) and I intentionally did not fix a random seed -> 
+                    you will observe small differences between runs''')    
      
  
 
