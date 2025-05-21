@@ -62,7 +62,7 @@ def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
 def perform_dbscan_clusterin(X, eps, min_samples):
     """ 
     """
-    clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = 8) 
+    clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = 4) 
     clusters_pred = clu.fit_predict(X)
     return(clusters_pred)
 
