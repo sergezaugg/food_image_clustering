@@ -9,15 +9,8 @@ from streamlit import session_state as ss
 import numpy as np
 import kagglehub
 import gc
-gc.collect()
-
-
-
-
-
-
 from sklearn.model_selection import train_test_split
-
+gc.collect()
 
 c00, c01  = st.columns([0.1, 0.18])
 
@@ -34,7 +27,7 @@ if ss['dapar']['feat_path'] == 'empty' :
         npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
         npzfile = np.load(npzfile_full_path)
         # take a subset 
-        X_train, X_test, Y_train, Y_test = train_test_split(npzfile['X'], npzfile['Y'], test_size=0.70, random_state=6666, shuffle=True)
+        X_train, X_test, Y_train, Y_test = train_test_split(npzfile['X'], npzfile['Y'], train_size=3000, random_state=6666, shuffle=True)
         di[npz_finame] = {'X' : X_train , 'clusters_true' : Y_train }
     ss['dapar']['npdata'] = di
     gc.collect()
