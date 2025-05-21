@@ -96,7 +96,6 @@ def make_scatter_plot(df, cat_name, title = "not set"):
     _ = fig.update_layout(xaxis_title=None)
     _ = fig.update_xaxes(showline=True, linewidth=2, linecolor='white', mirror=True)
     _ = fig.update_yaxes(showline=True, linewidth=2, linecolor='white', mirror=True)
-
     return(fig)
 
 @st.cache_data
@@ -119,6 +118,7 @@ def make_scatter_3d_plot(df, cat_name, title = "not set"):
     _ = fig.update_xaxes(showline=True, linewidth=2, linecolor='white', mirror=True)
     _ = fig.update_yaxes(showline=True, linewidth=2, linecolor='white', mirror=True)
     _ = fig.update_scenes(aspectmode='cube')
+    _ = fig.update_traces(marker_size = 5)
     return(fig)
 
 @st.fragment

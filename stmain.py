@@ -32,7 +32,7 @@ if 'upar' not in ss:
 with st.sidebar:
     st.info(ss['dapar']['dataset_name'])
     st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
-    st.text("v0.7.3")
+    st.text("v0.7.4")
     st.markdown(''':blue[QUICK GUIDE]''')
     st.text("(1) Set UMAP params")
     st.text("(2) Set DBSCAN params")
@@ -52,6 +52,6 @@ p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
 p04 = st.Page("page04.py", title="Viz 3D (dev)")
 pss = st.Page("page_ss.py", title="(Debug diagnostics)")
-pg = st.navigation([p03, p02, p01, p04, pss])
+pg = st.navigation([p03, p02, p01, p04])
 pg.run()
 
