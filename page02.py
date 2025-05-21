@@ -11,7 +11,7 @@ import pandas as pd
 import gc
 from sklearn.metrics import v_measure_score, adjusted_rand_score, adjusted_mutual_info_score
 from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
-from utils import make_sorted_df, make_scatter_plot
+from utils import make_sorted_df, make_scatter_plot, show_cluster_details
 gc.collect()
 
 cols = st.columns([0.1, 0.35, 0.1, 0.3, 0.25])
@@ -93,22 +93,13 @@ if len(ss['dapar']['X']) > 0 :
             coco[1].metric("Adj. Rand Score " ,        format(round(met_rand_sc,2), '03.2f'))
    
     # show plots 
-    c01, c02, c03, c04 = st.columns([0.5, 0.5, 0.20, 0.25])
+    c01, c02, c03 = st.columns([0.5, 0.5, 0.45])
     with c01:
         st.plotly_chart(fig01, use_container_width=False, theme=None)
     with c02:
         st.plotly_chart(fig02, use_container_width=False, theme=None)
     with c03:
-        clu_id_list = conf_table.index  
-        clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", default = clu_id_list[1])                
-        # clu_selected = clu_id_list[2]   
-        clu_row = pd.DataFrame(conf_table.loc[clu_selected]  )
-        clu_summary = (clu_row.loc[(clu_row!=0).any(axis=1)]).reset_index() 
-        clu_summary.columns = ['True', 'Pred']
-        clu_summary = clu_summary.sort_values(by='Pred', ascending = False)     
-    with c04:
-        st.text("Cluster content")
-        st.dataframe(clu_summary, hide_index = True, height =800)
+        show_cluster_details(conf_table)
 
     gc.collect()
 

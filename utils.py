@@ -97,5 +97,18 @@ def make_scatter_plot(df, cat_name, title = "not set"):
     return(fig)
 
 
-
+@st.fragment
+def show_cluster_details(conf_table):
+    c03, c04 = st.columns([0.5, 0.5])
+    with c03:
+        st.text("Select a cluster ID")
+        clu_id_list = conf_table.index  
+        clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", default = clu_id_list[0], label_visibility="hidden")                
+        clu_row = pd.DataFrame(conf_table.loc[clu_selected]  )
+        clu_summary = (clu_row.loc[(clu_row!=0).any(axis=1)]).reset_index() 
+        clu_summary.columns = ['True', 'Count']
+        clu_summary = clu_summary.sort_values(by='Count', ascending = False)     
+    with c04:
+        st.text("Cluster content")
+        st.dataframe(clu_summary, hide_index = True, height =800, use_container_width = True)
     
