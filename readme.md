@@ -1,38 +1,49 @@
 # CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION
 
+### Overview
+* This is a Streamlit dashboard to analyse data from images
+* Firsts, features are extracted from images offline with a script ```extract_features.py```
+* Second, the resulting npz file(a) must be loaded to a Kaggle dataset [Examlpe Kaggle Dataset](https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
+* Currently, the the path to dataset must be adjusted in the code.
+* Third, the Streamlit process in started ```streamlit run stmain.py``` (e.g. locally of on https://share.streamlit.io)
+* Thats all, now the dashboard is active.
+* See the deployed version [here](https://food-image-clustering.streamlit.app)
+
 ### Data
-* Data from Food Classification dataset published on Kaggle by Bjorn.
+* This project is based on images data from **Food Classification Dataset** shared on Kaggle by Bjorn.
 * https://www.kaggle.com/datasets/bjoernjostein/food-classification
 * Over 9300 hand-annotated images with 61 classes
+
+### Feature extraction (image to vector)
+* Features extracted with image classification models pre-trained with the Imagenet datataset
+* Details see on [PyTorch docu here](https://docs.pytorch.org/vision/main/models.html)
+* As output we used the last linear layer which outputs 1000 continuous features (ommited Softamx) 
+* These models were trained specifically for the 1000 Imagenet classes, so let's hope the feature are informative for our task
+* Pre-extracted features available [here](https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
 
 ### Clustering
 * Here the focus is on clustering (i.e. without using the labels)
 * Labels are only used to assess the quality of clustering
 
-### Feature extraction (image to vector)
-* Features extracted with image classification models pre-trained with the Imagenet datataset
-* Details see here : https://docs.pytorch.org/vision/main/models.html
-* As output we used the last linear layer which outputs 1000 continuous features (ommited Softamx) 
 
-### A bit of context
-* These models were trained specifically for the 1000 Imagenet classes, so let's hope the feature are informative for our task
 
 ### Dependencies / Intallation
 * Developed under Python 3.12.8
-* First make a venv, then:
+* Make a fresh venv!
 * For Streamlit deployment only
-```
+```bash 
 pip install -r requirements.txt
 ```
-* For feature extraction (Pytorch / GPU) and Streamlit deployment 
-```
+* For feature extraction (PyTorch / GPU) and Streamlit deployment 
+```bash 
 pip install -r req_torchcuda.txt
 ```
 
 ### Usage / Sample code
+*  To extract features, see **extract_features.py**, done rarely!
 *  Start dashboard
 ```bash 
 streamlit run stmain.py
 ```
-*  Extract features see **01_extract_features.py**, done rarely!
+
 
