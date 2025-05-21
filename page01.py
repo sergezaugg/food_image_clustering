@@ -19,39 +19,35 @@ with c01:
         st.markdown(''' 
 
             ### Data
-            * Data from Food Classification dataset published on Kaggle.
-            * https://www.kaggle.com/datasets/bjoernjostein/food-classification
-            * Original dataset is here https://www.aicrowd.com/challenges/kiit-ai-mini-blitz/problems/foodch        
+            * Data is fetched from [Food Classification dataset](https://www.kaggle.com/datasets/bjoernjostein/food-classification) published on Kaggle and original dataset is [here](https://www.aicrowd.com/challenges/kiit-ai-mini-blitz/problems/foodch)        
             * Over 9300 hand-annotated images with 61 classes
             * Smaller random subsample of N=3000 images used here to avoid memory issues.        
 
             ### Feature extraction (image to vector)
             * Features extracted with image classification models pre-trained with the Imagenet datataset
-            * Details see here : https://docs.pytorch.org/vision/main/models.html
+            * Details see official [PyTorch documentation](https://docs.pytorch.org/vision/main/models.html)
             * As output we used the last linear layer which outputs 1000 continuous features (ommited Softamx) 
             * These models were trained specifically for the Imagenet classes, so let's hope the feature are informative for our task
 
             ### Dimensionality reduction
-            * We used Uniform Manifold Approximation and Projection ([UMAP](https://umap-learn.readthedocs.io)), a technique for general non-linear dimension reduction.        
+            * We used Uniform Manifold Approximation and Projection ([UMAP](https://umap-learn.readthedocs.io)), a technique for general non-linear dimension reduction.  
+            * UMAP is a [stochastic algorithm](https://umap-learn.readthedocs.io/en/latest/reproducibility.html) -> expect small differences between runs!     
 
             ### Clustering
             * Clustering done with [DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html).
-            * Here the focus is on clustering and label are not used during training
-            * Labels are only used to assess the quality of clustering
+            * Here the focus is on clustering and ground truth classes are not used during training
+            * Ground truth classes are only used to assess the quality of clustering
+            * Samples not assigned to a cluster by DBSCAN are given the cluster ID '-01'
+            * The numerical value of Cluster IDs is arbitrary
                     
             ### Clustering metrics
+            * Adjusted Rand score is a consensus measures between true classes and predicted clusters, values in [-0.5, 1]
+            * Adjusted mutual info score (AMI) is a consensus measures between true classes and predicted clusters, values in [~0, 1]
             * More info on clustering metrics [Vinh, Epps, Bailey (2010)](https://jmlr.csail.mit.edu/papers/volume11/vinh10a/vinh10a.pdf)
                     
             ''')
         
-    with st.container(border=True):   
-        st.text("Noise samples, i.e. those that were not assigned to a cluster, are given the cluster ID '-01'") 
-        st.text("The numerical value of Cluster IDs is arbitrary and cannot be automatically linked to a true class, you have to assess the match graphically or with clustering metrics")
-        st.text("adjusted_rand_score is a consensus measures between true and predicted clusters, values in [-0.5, 1]")  
-        st.text("adjusted_mutual_info_score (AMI) is a consensus measures between true and predicted clusters, values in [~0, 1]")  
-        st.markdown('''UMAP is a [stochastic algorithm](https://umap-learn.readthedocs.io/en/latest/reproducibility.html) and I intentionally did not fix a random seed -> 
-                    you will observe small differences between runs''')    
-     
+   
  
 
       
