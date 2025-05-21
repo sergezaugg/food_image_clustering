@@ -31,7 +31,7 @@ if 'upar' not in ss:
 with st.sidebar:
     st.info(ss['dapar']['dataset_name'])
     st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
-    st.text("v0.7.2")
+    st.text("v0.7.3")
     st.markdown(''':blue[QUICK GUIDE]''')
     st.text("(1) Set UMAP params")
     st.text("(2) Set DBSCAN params")
@@ -45,7 +45,7 @@ with st.sidebar:
     st.markdown(''':blue[COMPUTATION SPEED]''')
     st.text("UMAP can take a few minutes")
     st.text("DBSCAN takes a few seconds")
-    st.text("If computation cached, fast")
+    st.text("If values cached its faster")
     st.title(""); 
 
 p01 = st.Page("page01.py", title="Summary")
