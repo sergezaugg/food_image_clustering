@@ -39,12 +39,13 @@ with st.sidebar:
     st.markdown(":bulb: Plots are zoomable!")
     st.markdown(":bulb: Hide cats by click in legend!")
     st.markdown(":bulb: ID '-01' = not assigned to cluster") 
-    st.markdown(":information_source: UMAP dim for plots always = 2")
-    st.markdown(":information_source: UMAP dim for DBCAN can be > 2")
+    st.markdown(":bulb: UMAP dim for plots always = 2")
+    st.markdown(":bulb: UMAP dim for DBCAN can be > 2")
     st.title("")
     st.markdown(''':blue[COMPUTATION SPEED]''')
     st.text("UMAP can take a few minutes")
     st.text("DBSCAN takes a few seconds")
+    st.text("If computation cached, fast")
     st.title(""); 
 
 p01 = st.Page("page01.py", title="Summary")

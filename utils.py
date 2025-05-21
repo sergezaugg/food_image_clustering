@@ -22,16 +22,6 @@ def update_ss(kname, ssname):
     """
     ss["upar"][ssname] = ss[kname]      
 
-
-# @st.cache_data
-# def load_data_from_npz_into_ss(featu_path): 
-#     """
-#     """ 
-#     npzfile = np.load(os.path.join(ss['dapar']['feat_path'], featu_path))
-#     ss['dapar']['X'] = npzfile['X']
-#     ss['dapar']['clusters_true'] = npzfile['Y'] 
-#     return(featu_path)
-
 @st.cache_data
 def dim_reduction_for_2D_plot(X, n_neigh):
     """
@@ -96,7 +86,7 @@ def make_scatter_plot(df, cat_name, title = "not set"):
         title = title,
         # labels = {'aaa', ""}
         )
-    _ = fig.update_layout(margin=dict(t=30, b=350, l=15, r=15))
+    _ = fig.update_layout(margin=dict(t=30, b=450, l=15, r=15))
     _ = fig.update_layout(legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="left", x=0.0))
     _ = fig.update_layout(showlegend=True,legend_title=None)
     _ = fig.update_layout(yaxis_title=None)

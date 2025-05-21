@@ -81,9 +81,7 @@ if len(ss['dapar']['X']) > 0 :
     met_amui_sc = adjusted_mutual_info_score(labels_true = ss['dapar']['clusters_true'] , labels_pred = clusters_pred_str)
     met_rand_sc =        adjusted_rand_score(labels_true = ss['dapar']['clusters_true'] , labels_pred = clusters_pred_str)
     met_v_measu =            v_measure_score(labels_true = ss['dapar']['clusters_true'] , labels_pred = clusters_pred_str, beta=1.0)
-
-    # st.dataframe(pd.crosstab(clusters_pred_str, ss['dapar']['clusters_true']))
-
+    conf_table = pd.DataFrame(pd.crosstab(clusters_pred_str, ss['dapar']['clusters_true']))
     #-------------------------------------------
 
     with cols[4]:
@@ -95,13 +93,26 @@ if len(ss['dapar']['X']) > 0 :
             coco[1].metric("Adj. Rand Score " ,        format(round(met_rand_sc,2), '03.2f'))
    
     # show plots 
-    c01, c02 = st.columns(2)
+    c01, c02, c03, c04 = st.columns([0.5, 0.5, 0.20, 0.25])
     with c01:
         st.plotly_chart(fig01, use_container_width=False, theme=None)
     with c02:
         st.plotly_chart(fig02, use_container_width=False, theme=None)
+    with c03:
+        clu_id_list = conf_table.index  
+        clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", default = clu_id_list[1])                
+        # clu_selected = clu_id_list[2]   
+        clu_row = pd.DataFrame(conf_table.loc[clu_selected]  )
+        clu_summary = (clu_row.loc[(clu_row!=0).any(axis=1)]).reset_index() 
+        clu_summary.columns = ['True', 'Pred']
+        clu_summary = clu_summary.sort_values(by='Pred', ascending = False)     
+    with c04:
+        st.text("Cluster content")
+        st.dataframe(clu_summary, hide_index = True, height =800)
 
     gc.collect()
+
+
   
 
         
