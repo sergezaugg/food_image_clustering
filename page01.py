@@ -39,6 +39,9 @@ with c01:
             * Here the focus is on clustering and label are not used during training
             * Labels are only used to assess the quality of clustering
                     
+            ### Clustering metrics
+            * More info on clustering metrics [Vinh, Epps, Bailey (2010)](https://jmlr.csail.mit.edu/papers/volume11/vinh10a/vinh10a.pdf)
+                    
             ''')
         
     with st.container(border=True):   

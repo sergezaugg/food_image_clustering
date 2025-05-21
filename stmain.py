@@ -17,6 +17,7 @@ if 'dapar' not in ss:
         'dataset_name' :  'empty',
         'X' : np.array([]),
         'clusters_true' : np.array([]),
+        'clusters_pred_str' : np.array([]),
         }
     
 if 'upar' not in ss:
@@ -31,7 +32,7 @@ if 'upar' not in ss:
 with st.sidebar:
     st.info(ss['dapar']['dataset_name'])
     st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
-    st.text("v0.7.3")
+    st.text("v0.7.4")
     st.markdown(''':blue[QUICK GUIDE]''')
     st.text("(1) Set UMAP params")
     st.text("(2) Set DBSCAN params")
@@ -41,17 +42,16 @@ with st.sidebar:
     st.markdown(":bulb: ID '-01' = not assigned to cluster") 
     st.markdown(":bulb: UMAP dim for plots always = 2")
     st.markdown(":bulb: UMAP dim for DBCAN can be > 2")
-    st.title("")
     st.markdown(''':blue[COMPUTATION SPEED]''')
     st.text("UMAP can take a few minutes")
     st.text("DBSCAN takes a few seconds")
     st.text("If values cached its faster")
-    st.title(""); 
 
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
+p04 = st.Page("page04.py", title="Viz 3D (dev)")
 pss = st.Page("page_ss.py", title="(Debug diagnostics)")
-pg = st.navigation([p03, p02, p01, pss])
+pg = st.navigation([p03, p02, p01, p04])
 pg.run()
 

@@ -11,7 +11,7 @@ import pandas as pd
 import gc
 from sklearn.metrics import v_measure_score, adjusted_rand_score, adjusted_mutual_info_score
 from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
-from utils import make_sorted_df, make_scatter_plot, show_cluster_details
+from utils import make_sorted_df, make_scatter_plot, show_cluster_details, make_scatter_3d_plot
 gc.collect()
 
 cols = st.columns([0.1, 0.35, 0.1, 0.35, 0.25])
@@ -45,7 +45,7 @@ if len(ss['dapar']['X']) > 0 :
     
     #-------------------------------------------
     # computational block 1 (st-cached)
-    X2D_scaled = dim_reduction_for_2D_plot(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'])
+    X2D_scaled = dim_reduction_for_2D_plot(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'], n_components = 2)
     X_scaled = dim_reduction_for_clustering(X = ss['dapar']['X'], n_neigh = ss['upar']['umap_n_neighbors'], n_dims_red = ss['upar']['umap_n_dims_red'], 
                                             skip_umap = ss['upar']['skip_umap'])
     gc.collect()
@@ -70,25 +70,28 @@ if len(ss['dapar']['X']) > 0 :
     clusters_pred = perform_dbscan_clusterin(X = X_scaled, eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
     num_unasigned = (clusters_pred == -1).sum()
     num_asigned = len(clusters_pred) - num_unasigned
-    clusters_pred_str = np.array([format(a, '03d') for a in clusters_pred])
+    num_clusters = len(np.unique(clusters_pred))
+    ss['dapar']['clusters_pred_str'] = np.array([format(a, '03d') for a in clusters_pred])
     df_true = make_sorted_df(cat = ss['dapar']['clusters_true'], cat_name = 'True class', X = X2D_scaled)
-    df_pred = make_sorted_df(cat = clusters_pred_str, cat_name = 'Predicted cluster', X = X2D_scaled)
+    df_pred = make_sorted_df(cat = ss['dapar']['clusters_pred_str'], cat_name = 'Predicted cluster', X = X2D_scaled)
     gc.collect()
     fig01 = make_scatter_plot(df = df_true, cat_name = 'True class', title = "Ground truth")
     fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters")
+
     gc.collect()
     # metrics 
-    met_amui_sc = adjusted_mutual_info_score(labels_true = ss['dapar']['clusters_true'] , labels_pred = clusters_pred_str)
-    met_rand_sc =        adjusted_rand_score(labels_true = ss['dapar']['clusters_true'] , labels_pred = clusters_pred_str)
-    met_v_measu =            v_measure_score(labels_true = ss['dapar']['clusters_true'] , labels_pred = clusters_pred_str, beta=1.0)
-    conf_table = pd.DataFrame(pd.crosstab(clusters_pred_str, ss['dapar']['clusters_true']))
+    met_amui_sc = adjusted_mutual_info_score(labels_true = ss['dapar']['clusters_true'] , labels_pred = ss['dapar']['clusters_pred_str'])
+    met_rand_sc =        adjusted_rand_score(labels_true = ss['dapar']['clusters_true'] , labels_pred = ss['dapar']['clusters_pred_str'])
+    met_v_measu =            v_measure_score(labels_true = ss['dapar']['clusters_true'] , labels_pred = ss['dapar']['clusters_pred_str'], beta=1.0)
+    conf_table = pd.DataFrame(pd.crosstab(ss['dapar']['clusters_pred_str'], ss['dapar']['clusters_true']))
     #-------------------------------------------
 
     with cols[4]:
         with st.container(border=True, height = 250): 
             st.text("Clustering metrics")
             coco = st.columns(2)
-            coco[0].metric("N assigned ", num_asigned)
+            coco[0].metric("N images assigned ", num_asigned)
+            coco[0].metric("N clusters", num_clusters)
             coco[1].metric("Adj. Mutual Info Score " , format(round(met_amui_sc,2), '03.2f'))
             coco[1].metric("Adj. Rand Score " ,        format(round(met_rand_sc,2), '03.2f'))
    
