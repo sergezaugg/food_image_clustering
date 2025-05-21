@@ -44,7 +44,7 @@ else :
                     ss['dapar']['X']              = ss['dapar']['npdata'][npz_finame]['X']  
                     ss['dapar']['clusters_true']  = ss['dapar']['npdata'][npz_finame]['clusters_true'] 
                     st.rerun()  # mainly to update sidebar   
-        st.page_link("page02.py", label="Now let's analyse this data")                
+        st.page_link("page02.py", label="Go to analysis")                
     gc.collect()
    
       
