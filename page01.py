@@ -23,6 +23,7 @@ with c01:
             * https://www.kaggle.com/datasets/bjoernjostein/food-classification
             * Original dataset is here https://www.aicrowd.com/challenges/kiit-ai-mini-blitz/problems/foodch        
             * Over 9300 hand-annotated images with 61 classes
+            * Smaller random subsample of N=3000 images used here to avoid memory issues.        
 
             ### Feature extraction (image to vector)
             * Features extracted with image classification models pre-trained with the Imagenet datataset
