@@ -75,8 +75,8 @@ if len(ss['dapar']['X']) > 0 :
     df_true = make_sorted_df(cat = ss['dapar']['clusters_true'], cat_name = 'True class', X = X2D_scaled)
     df_pred = make_sorted_df(cat = ss['dapar']['clusters_pred_str'], cat_name = 'Predicted cluster', X = X2D_scaled)
     gc.collect()
-    fig01 = make_scatter_plot(df = df_true, cat_name = 'True class',        title = "Ground truth",       height = 700, width = 1000, b_margin = 200)
-    fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters", height = 700, width = 1000, b_margin = 200)
+    fig01 = make_scatter_plot(df = df_true, cat_name = 'True class',        title = "Ground truth",       height = 800, width = 1000, b_margin = 300)
+    fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters", height = 800, width = 1000, b_margin = 300)
 
     gc.collect()
     # metrics 

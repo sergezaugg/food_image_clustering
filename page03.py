@@ -7,10 +7,18 @@ import os
 import streamlit as st
 from streamlit import session_state as ss
 import numpy as np
+import pandas as pd
 import kagglehub
 import gc
 from sklearn.model_selection import train_test_split
 gc.collect()
+
+
+def get_short_class_name(a):
+    """ a : a string"""
+    # return("-".join(a.split("-")[0:2]))
+    return("-".join(a.split("-")[0:1]))
+
 
 c00, c01  = st.columns([0.1, 0.18])
 
@@ -46,13 +54,10 @@ else :
                     ss['dapar']['X']              = ss['dapar']['npdata'][npz_finame]['X']  
                     ss['dapar']['clusters_true']  = ss['dapar']['npdata'][npz_finame]['clusters_true'] 
                     ss['dapar']['im_filenames']  = ss['dapar']['npdata'][npz_finame]['im_filenames'] 
+                    # simplify true class 
+                    ss['dapar']['clusters_true'] = pd.Series(ss['dapar']['clusters_true']).apply(func= get_short_class_name).values
                     st.rerun()  # mainly to update sidebar   
         st.page_link("page02.py", label="Go to analysis")                
     gc.collect()
    
       
-
-
-
-
-
