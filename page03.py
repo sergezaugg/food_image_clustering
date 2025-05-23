@@ -21,13 +21,7 @@ if ss['dapar']['feat_path'] == 'empty' :
     kgl_ds = "sezaugg/" + 'food-classification-features-v01' # link on Kaggle is fixed
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
-
-
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'train_images', 'train_images')
-
-
-
-
     di = dict()
     li_npz = [a for a in os.listdir(ss['dapar']['feat_path']) if '.npz' in a and 'Feat_from_' in a]
     for npz_finame in li_npz:
@@ -39,8 +33,6 @@ if ss['dapar']['feat_path'] == 'empty' :
     ss['dapar']['npdata'] = di
     gc.collect()
     st.rerun()
-
-
 # Then, choose a dataset
 else :
     with c00:
@@ -53,24 +45,13 @@ else :
                     ss['dapar']['dataset_name']   = npz_finame 
                     ss['dapar']['X']              = ss['dapar']['npdata'][npz_finame]['X']  
                     ss['dapar']['clusters_true']  = ss['dapar']['npdata'][npz_finame]['clusters_true'] 
-
-                    # im_filenames
                     ss['dapar']['im_filenames']  = ss['dapar']['npdata'][npz_finame]['im_filenames'] 
-
                     st.rerun()  # mainly to update sidebar   
         st.page_link("page02.py", label="Go to analysis")                
     gc.collect()
    
       
 
-# # dev
-# st.text("");st.text("");st.text("");st.text("")
-# st.write("dev info:")
-# st.write('feat_path', ss['dapar']['feat_path'])  
-# st.write('imgs_path', ss['dapar']['imgs_path'])  
-# # st.write(os.listdir(ss['dapar']['feat_path']))
-
-# st.write(ss['dapar']['npdata'])
 
 
 
