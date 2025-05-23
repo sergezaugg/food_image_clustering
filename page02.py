@@ -132,8 +132,8 @@ if len(ss['dapar']['X']) > 0 :
                 print('shit') 
 
 
-
-    st.text("Select a cluster ID")
+    st.divider()
+    st.text("Cluster content (20 random images from cluster) [Experimental]")
     clu_id_list = np.unique(ss['dapar']['clusters_pred_str'])
     clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", key = "k_img_clu",
                                         default = clu_id_list[0], label_visibility="hidden")                

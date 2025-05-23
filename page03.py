@@ -63,14 +63,14 @@ else :
    
       
 
-# dev
-st.text("");st.text("");st.text("");st.text("")
-st.write("dev info:")
-st.write('feat_path', ss['dapar']['feat_path'])  
-st.write('imgs_path', ss['dapar']['imgs_path'])  
-# st.write(os.listdir(ss['dapar']['feat_path']))
+# # dev
+# st.text("");st.text("");st.text("");st.text("")
+# st.write("dev info:")
+# st.write('feat_path', ss['dapar']['feat_path'])  
+# st.write('imgs_path', ss['dapar']['imgs_path'])  
+# # st.write(os.listdir(ss['dapar']['feat_path']))
 
-st.write(ss['dapar']['npdata'])
+# st.write(ss['dapar']['npdata'])
 
 
 
