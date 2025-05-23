@@ -13,6 +13,9 @@ from torchvision.models import resnet50, ResNet50_Weights
 from torchvision.models import densenet121, DenseNet121_Weights 
 from torchvision.models import efficientnet_v2_s, EfficientNet_V2_S_Weights 
 from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
+from torchvision.models import vit_b_16, ViT_B_16_Weights
+
+
 torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -55,20 +58,27 @@ class SpectroImageDataset(Dataset):
 # weights = ResNet50_Weights.IMAGENET1K_V2
 # model = resnet50(weights=weights)
 
-model_tag = "DenseNet121_IMAGENET1K_V1"
-weights = DenseNet121_Weights.IMAGENET1K_V1
-model = densenet121(weights=weights)
+# model_tag = "DenseNet121_IMAGENET1K_V1"
+# weights = DenseNet121_Weights.IMAGENET1K_V1
+# model = densenet121(weights=weights)
 
 # model_tag = "MobileNet_V3_Large_IMAGENET1K_V2"
 # weights = MobileNet_V3_Large_Weights.IMAGENET1K_V2
 # model = mobilenet_v3_large(weights=weights)
+
+model_tag = "vit_b_16_Weights"
+weights = ViT_B_16_Weights.IMAGENET1K_SWAG_E2E_V1
+model = vit_b_16(weights=weights)
+
+
+# vit_b_16
 
 
 # Step 2: Initialize the inference transforms
 model.eval()
 preprocess = weights.transforms()
 dataset = SpectroImageDataset(image_path, label_path)
-loader = torch.utils.data.DataLoader(dataset, batch_size=32,  shuffle=False, drop_last=False)
+loader = torch.utils.data.DataLoader(dataset, batch_size=16,  shuffle=False, drop_last=False)
 
 X_li = []
 N_li = []
