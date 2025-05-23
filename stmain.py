@@ -13,13 +13,16 @@ st.set_page_config(layout="wide")
 if 'dapar' not in ss:
     ss['dapar'] = {
         'feat_path' : 'empty',
-        'npdata' :   'empty',
+        'imgs_path' : 'empty',
+        'npdata'    : 'empty',
         'dataset_name' :  'empty',
         'X' : np.array([]),
         'clusters_true' : np.array([]),
         'clusters_pred_str' : np.array([]),
+        'im_filenames' : np.array([]),
         }
-    
+
+
 if 'upar' not in ss:
     ss['upar'] = {
         'umap_n_neighbors' : 10,
