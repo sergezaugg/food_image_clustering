@@ -51,13 +51,13 @@ class SpectroImageDataset(Dataset):
 
 # Step 1: Initialize model with the best available weights
 
-model_tag = "ResNet50_IMAGENET1K_V2"
-weights = ResNet50_Weights.IMAGENET1K_V2
-model = resnet50(weights=weights)
+# model_tag = "ResNet50_IMAGENET1K_V2"
+# weights = ResNet50_Weights.IMAGENET1K_V2
+# model = resnet50(weights=weights)
 
-# model_tag = "DenseNet121_IMAGENET1K_V1"
-# weights = DenseNet121_Weights.IMAGENET1K_V1
-# model = densenet121(weights=weights)
+model_tag = "DenseNet121_IMAGENET1K_V1"
+weights = DenseNet121_Weights.IMAGENET1K_V1
+model = densenet121(weights=weights)
 
 # model_tag = "MobileNet_V3_Large_IMAGENET1K_V2"
 # weights = MobileNet_V3_Large_Weights.IMAGENET1K_V2
