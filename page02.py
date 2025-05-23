@@ -86,6 +86,11 @@ if len(ss['dapar']['X']) > 0 :
     conf_table = pd.DataFrame(pd.crosstab(ss['dapar']['clusters_pred_str'], ss['dapar']['clusters_true']))
     #-------------------------------------------
 
+
+
+  
+
+
     with cols[4]:
         with st.container(border=True, height = 250): 
             st.text("Clustering metrics")
@@ -104,6 +109,43 @@ if len(ss['dapar']['X']) > 0 :
     with c03:
         show_cluster_details(conf_table)
 
+
+
+
+
+
+    ##################################################
+    @st.fragment
+    def display_mini_images_by_file(sel_imgs):
+        num_cols = 10
+        grid = st.columns(num_cols)
+        col = 0
+        for ii, im_filname in enumerate(sel_imgs):
+            try:
+                with grid[col]:
+                    st.image(os.path.join(ss['dapar']['imgs_path'], im_filname), use_container_width=True, caption=im_filname)
+                col += 1
+                if ii % num_cols == (num_cols-1):
+                    col = 0
+                print('OK')    
+            except:
+                print('shit') 
+
+
+
+    st.text("Select a cluster ID")
+    clu_id_list = np.unique(ss['dapar']['clusters_pred_str'])
+    clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", key = "k_img_clu",
+                                        default = clu_id_list[0], label_visibility="hidden")                
+    # select all images in a given cluster 
+    sel = ss['dapar']['clusters_pred_str'] == clu_selected
+    images_in_cluster = ss['dapar']['im_filenames'][sel]
+    # take a smaller subsample 
+    images_in_cluster_sample = np.random.choice(images_in_cluster, size=min(20, len(images_in_cluster)), replace=False)    
+
+    display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
+
+   
     gc.collect()
 
 
