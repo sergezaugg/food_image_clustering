@@ -11,6 +11,7 @@ import plotly.express as px
 import umap.umap_ as umap
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import DBSCAN
+import numpy as np
 # from sklearn.cluster import OPTICS
 
 def update_ss(kname, ssname):
@@ -76,20 +77,20 @@ def make_sorted_df(cat, cat_name, X):
     return(df)
 
 @st.cache_data
-def make_scatter_plot(df, cat_name, title = "not set"):
+def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 1000, b_margin=300):
     fig = px.scatter(
         data_frame = df,
         x = 'Dim-1',
         y = 'Dim-2',
         color = cat_name,
         template='plotly_dark',
-        height=900,
-        width =1000,
+        height= height,
+        width = width,
         color_discrete_sequence = px.colors.qualitative.Light24,
         title = title,
         # labels = {'aaa', ""}
         )
-    _ = fig.update_layout(margin=dict(t=30, b=450, l=15, r=15))
+    _ = fig.update_layout(margin=dict(t=30, b=b_margin, l=15, r=15))
     _ = fig.update_layout(legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="left", x=0.0))
     _ = fig.update_layout(showlegend=True,legend_title=None)
     _ = fig.update_layout(yaxis_title=None)
@@ -135,4 +136,41 @@ def show_cluster_details(conf_table):
     with c04:
         st.text("Cluster content")
         st.dataframe(clu_summary, hide_index = True, height =800, use_container_width = True)
-    
+
+
+@st.fragment
+def display_mini_images_by_file(sel_imgs, labels):
+    num_cols = 15
+    grid = st.columns(num_cols)
+    col = 0
+    for ii, im_filname in enumerate(sel_imgs):
+        try:
+            with grid[col]:
+                st.image(os.path.join(ss['dapar']['imgs_path'], im_filname), use_container_width=True, caption=labels[ii])
+            col += 1
+            if ii % num_cols == (num_cols-1):
+                col = 0
+            print('OK')    
+        except:
+            print('shit') 
+
+
+@st.fragment
+def display_imags_from_cluster():
+    clu_id_list = np.unique(ss['dapar']['clusters_pred_str'])
+    clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", key = "k_img_clu",
+                                        default = clu_id_list[-1], label_visibility="hidden")                
+    # select all images in a given cluster 
+    sel = ss['dapar']['clusters_pred_str'] == clu_selected
+    images_in_cluster = ss['dapar']['im_filenames'][sel]
+    images_in_clu_tru = ss['dapar']['clusters_true'][sel]
+    # take a smaller subsample 
+    rand_index = np.random.choice(np.arange(len(images_in_cluster)), size=min(45, len(images_in_cluster)), replace=False)    
+    images_in_cluster_sample = images_in_cluster[rand_index]
+    images_clu_tru_sample = images_in_clu_tru[rand_index]
+    display_mini_images_by_file(sel_imgs = images_in_cluster_sample, labels = images_clu_tru_sample)
+
+
+
+
+

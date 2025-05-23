@@ -11,7 +11,7 @@ import pandas as pd
 import gc
 from sklearn.metrics import v_measure_score, adjusted_rand_score, adjusted_mutual_info_score
 from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
-from utils import make_sorted_df, make_scatter_plot, show_cluster_details, make_scatter_3d_plot
+from utils import make_sorted_df, make_scatter_plot, show_cluster_details, make_scatter_3d_plot, display_imags_from_cluster
 gc.collect()
 
 cols = st.columns([0.1, 0.35, 0.1, 0.35, 0.25])
@@ -75,8 +75,8 @@ if len(ss['dapar']['X']) > 0 :
     df_true = make_sorted_df(cat = ss['dapar']['clusters_true'], cat_name = 'True class', X = X2D_scaled)
     df_pred = make_sorted_df(cat = ss['dapar']['clusters_pred_str'], cat_name = 'Predicted cluster', X = X2D_scaled)
     gc.collect()
-    fig01 = make_scatter_plot(df = df_true, cat_name = 'True class', title = "Ground truth")
-    fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters")
+    fig01 = make_scatter_plot(df = df_true, cat_name = 'True class',        title = "Ground truth",       height = 800, width = 1000, b_margin = 300)
+    fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters", height = 800, width = 1000, b_margin = 300)
 
     gc.collect()
     # metrics 
@@ -85,11 +85,6 @@ if len(ss['dapar']['X']) > 0 :
     met_v_measu =            v_measure_score(labels_true = ss['dapar']['clusters_true'] , labels_pred = ss['dapar']['clusters_pred_str'], beta=1.0)
     conf_table = pd.DataFrame(pd.crosstab(ss['dapar']['clusters_pred_str'], ss['dapar']['clusters_true']))
     #-------------------------------------------
-
-
-
-  
-
 
     with cols[4]:
         with st.container(border=True, height = 250): 
@@ -101,52 +96,15 @@ if len(ss['dapar']['X']) > 0 :
             coco[1].metric("Adj. Rand Score " ,        format(round(met_rand_sc,2), '03.2f'))
    
     # show plots 
-    c01, c02, c03 = st.columns([0.5, 0.5, 0.45])
+    c01, c02 = st.columns([0.5, 0.5])
     with c01:
         st.plotly_chart(fig01, use_container_width=False, theme=None)
     with c02:
         st.plotly_chart(fig02, use_container_width=False, theme=None)
-    with c03:
-        show_cluster_details(conf_table)
-
-
-
-
-
-
-    ##################################################
-    @st.fragment
-    def display_mini_images_by_file(sel_imgs):
-        num_cols = 10
-        grid = st.columns(num_cols)
-        col = 0
-        for ii, im_filname in enumerate(sel_imgs):
-            try:
-                with grid[col]:
-                    st.image(os.path.join(ss['dapar']['imgs_path'], im_filname), use_container_width=True, caption=im_filname)
-                col += 1
-                if ii % num_cols == (num_cols-1):
-                    col = 0
-                print('OK')    
-            except:
-                print('shit') 
-
-
-    st.divider()
-    st.text("Cluster content (20 random images from cluster) [Experimental]")
-    clu_id_list = np.unique(ss['dapar']['clusters_pred_str'])
-    clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", key = "k_img_clu",
-                                        default = clu_id_list[0], label_visibility="hidden")                
-    # select all images in a given cluster 
-    sel = ss['dapar']['clusters_pred_str'] == clu_selected
-    images_in_cluster = ss['dapar']['im_filenames'][sel]
-    # take a smaller subsample 
-    images_in_cluster_sample = np.random.choice(images_in_cluster, size=min(20, len(images_in_cluster)), replace=False)    
-
-    display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
-
    
-    gc.collect()
+    st.text("Cluster content (max 45 random images from cluster)")
+    display_imags_from_cluster()
+   
 
 
   
