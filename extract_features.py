@@ -22,7 +22,8 @@ batch_size = 16
 # model_tag = "DenseNet121"
 # model_tag = "MobileNet_V3_Large"
 # model_tag = "Vit_b_16"
-model_tag = "vgg16"
+# model_tag = "vgg16"
+model_tag = 'MobileNet_randinit'
 
 #-------------------------
 # Step 1: Initialize model with pre-trained weights
