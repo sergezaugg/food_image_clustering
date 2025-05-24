@@ -11,25 +11,22 @@ import pandas as pd
 import kagglehub
 import gc
 from sklearn.model_selection import train_test_split
+from utils import get_short_class_name
 gc.collect()
 
 
-def get_short_class_name(a):
-    """ a : a string"""
-    # return("-".join(a.split("-")[0:2]))
-    return("-".join(a.split("-")[0:1]))
 
 
 c00, c01  = st.columns([0.1, 0.18])
 
 # First, get data into ss
+# download the data from kaggle (https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
 if ss['dapar']['feat_path'] == 'empty' :
     st.text("Preparing data ...")
-    # download the data from kaggle (https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
-
-    kgl_ds = "sezaugg/" + 'food-classification-features-v01' # link on Kaggle is fixed
-
     
+    # kgl_ds = "sezaugg/" + 'food-classification-features-v01' # link on Kaggle is fixed
+    kgl_ds = "sezaugg/" + 'food-classification-features-v02' # link on Kaggle is fixed
+
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'train_images', 'train_images')
@@ -38,7 +35,7 @@ if ss['dapar']['feat_path'] == 'empty' :
     for npz_finame in li_npz:
         npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
         npzfile = np.load(npzfile_full_path)
-        # take a subset 
+        # take a subset of data (else public streamlit.app will crash) 
         X_train, X_test, Y_train, Y_test, N_train, N_test, = train_test_split(npzfile['X'], npzfile['Y'], npzfile['N'], train_size=3000, random_state=6666, shuffle=True)
         di[npz_finame] = {'X' : X_train , 'clusters_true' : Y_train , 'im_filenames' : N_train}
     ss['dapar']['npdata'] = di
@@ -52,7 +49,7 @@ else :
                 npz_finame = st.selectbox("Select data with extracted features", options = ss['dapar']['npdata'].keys())
                 submitted_1 = st.form_submit_button("Confirm", type = "primary")   
                 if submitted_1:
-                    # copy selected data into dedicated di 
+                    # copy selected data into dedicated dict 
                     ss['dapar']['dataset_name']   = npz_finame 
                     ss['dapar']['X']              = ss['dapar']['npdata'][npz_finame]['X']  
                     ss['dapar']['clusters_true']  = ss['dapar']['npdata'][npz_finame]['clusters_true'] 
@@ -61,6 +58,7 @@ else :
                     ss['dapar']['clusters_true'] = pd.Series(ss['dapar']['clusters_true']).apply(func= get_short_class_name).values
                     st.rerun()  # mainly to update sidebar   
         st.page_link("page02.py", label="Go to analysis")                
-    gc.collect()
-   
-      
+        
+
+gc.collect()
+        

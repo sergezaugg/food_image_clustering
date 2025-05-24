@@ -14,6 +14,7 @@ from sklearn.cluster import DBSCAN
 import numpy as np
 # from sklearn.cluster import OPTICS
 
+
 def update_ss(kname, ssname):
     """
     description : helper callback fun to implement statefull apps
@@ -21,6 +22,10 @@ def update_ss(kname, ssname):
     ssname : key name of variable in session state (ss)
     """
     ss["upar"][ssname] = ss[kname]      
+
+def get_short_class_name(a):
+    """ a : a string"""
+    return("-".join(a.split("-")[0:2]))
 
 @st.cache_data
 def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
