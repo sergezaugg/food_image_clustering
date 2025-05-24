@@ -31,7 +31,7 @@ if ss['dapar']['feat_path'] == 'empty' :
     ss['dapar']['feat_path'] = kgl_path
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'train_images', 'train_images')
     di = dict()
-    li_npz = [a for a in os.listdir(ss['dapar']['feat_path']) if '.npz' in a and 'Feat_from_' in a]
+    li_npz = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and ('Feat_from_' in a or 'Pure_random_' in a)]
     for npz_finame in li_npz:
         npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
         npzfile = np.load(npzfile_full_path)
