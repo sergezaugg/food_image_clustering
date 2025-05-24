@@ -18,10 +18,11 @@ label_path = "D:/image_clust/food_images/train_img.csv"
 featu_path = "./extracted_features"
 batch_size = 16
 
-model_tag = "ResNet50"
+# model_tag = "ResNet50"
 # model_tag = "DenseNet121"
 # model_tag = "MobileNet_V3_Large"
 # model_tag = "Vit_b_16"
+model_tag = "vgg16"
 
 #-------------------------
 # Step 1: Initialize model with pre-trained weights
@@ -41,6 +42,10 @@ elif model_tag == "Vit_b_16":
     from torchvision.models import vit_b_16, ViT_B_16_Weights
     weights = ViT_B_16_Weights.IMAGENET1K_SWAG_E2E_V1
     model = vit_b_16(weights=weights)
+elif model_tag == "vgg16":
+    from torchvision.models import vgg16, VGG16_Weights
+    weights = VGG16_Weights.IMAGENET1K_V1
+    model = vgg16(weights=weights)
 else:
     print("not a valid model_tag")
 
