@@ -58,6 +58,7 @@ def load_pretraind_model(model_tag):
     elif model_tag == "MobileNet_V3_Large":
         from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
         weights = MobileNet_V3_Large_Weights.IMAGENET1K_V2
+        model = mobilenet_v3_large(weights=weights)
     elif model_tag == "MobileNet_randinit":
         from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
         weights = MobileNet_V3_Large_Weights.IMAGENET1K_V2
