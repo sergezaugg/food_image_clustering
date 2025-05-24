@@ -7,7 +7,7 @@ import os
 import numpy as np
 import datetime
 import torch
-from utils_ml import ImageDataset
+from utils_ml import ImageDataset, load_pretraind_model
 torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -26,29 +26,7 @@ model_tag = "vgg16"
 
 #-------------------------
 # Step 1: Initialize model with pre-trained weights
-if model_tag == "ResNet50":
-    from torchvision.models import resnet50, ResNet50_Weights
-    weights = ResNet50_Weights.IMAGENET1K_V2
-    model = resnet50(weights=weights)
-elif model_tag == "DenseNet121":
-    from torchvision.models import densenet121, DenseNet121_Weights 
-    weights = DenseNet121_Weights.IMAGENET1K_V1
-    model = densenet121(weights=weights)
-elif model_tag == "MobileNet_V3_Large":
-    from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
-    weights = MobileNet_V3_Large_Weights.IMAGENET1K_V2
-    model = mobilenet_v3_large(weights=weights)
-elif model_tag == "Vit_b_16":
-    from torchvision.models import vit_b_16, ViT_B_16_Weights
-    weights = ViT_B_16_Weights.IMAGENET1K_SWAG_E2E_V1
-    model = vit_b_16(weights=weights)
-elif model_tag == "vgg16":
-    from torchvision.models import vgg16, VGG16_Weights
-    weights = VGG16_Weights.IMAGENET1K_V1
-    model = vgg16(weights=weights)
-else:
-    print("not a valid model_tag")
-
+model, weights = load_pretraind_model(model_tag)
 
 #-------------------------
 # Step 2: Extract features 
