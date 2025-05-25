@@ -47,7 +47,7 @@ else :
         with st.container(border=True, height = 200):   
             with st.form("form01", border=False):
                 npz_finame = st.selectbox("Select data with extracted features", options = ss['dapar']['npdata'].keys())
-                submitted_1 = st.form_submit_button("Confirm", type = "primary")   
+                submitted_1 = st.form_submit_button("Activate dataset", type = "primary")   
                 if submitted_1:
                     # copy selected data into dedicated dict 
                     ss['dapar']['dataset_name']   = npz_finame 
@@ -57,7 +57,7 @@ else :
                     # simplify true class 
                     ss['dapar']['clusters_true'] = pd.Series(ss['dapar']['clusters_true']).apply(func= get_short_class_name).values
                     st.rerun()  # mainly to update sidebar   
-        st.page_link("page02.py", label="Go to analysis")                
+        # st.page_link("page02.py", label="Go to analysis")                
         
 
 gc.collect()
