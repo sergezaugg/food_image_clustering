@@ -24,8 +24,8 @@ c00, c01  = st.columns([0.1, 0.18])
 if ss['dapar']['feat_path'] == 'empty' :
     st.text("Preparing data ...")
     
-    # kgl_ds = "sezaugg/" + 'food-classification-features-v01' # prod
-    kgl_ds = "sezaugg/" + 'food-classification-features-v02' # dev
+    kgl_ds = "sezaugg/" + 'food-classification-features-v01' # prod
+    # kgl_ds = "sezaugg/" + 'food-classification-features-v02' # dev
 
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path

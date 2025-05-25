@@ -41,7 +41,6 @@ def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     X2D_trans = reducer.fit_transform(X_scaled, ensure_all_finite=True)
-    # scaler = StandardScaler()
     X2D_scaled = scaler.fit_transform(X2D_trans)
     return(X2D_scaled)
 

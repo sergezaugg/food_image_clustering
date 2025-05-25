@@ -22,7 +22,6 @@ if 'dapar' not in ss:
         'im_filenames' : np.array([]),
         }
 
-
 if 'upar' not in ss:
     ss['upar'] = {
         'umap_n_neighbors' : 10,
