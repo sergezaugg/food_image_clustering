@@ -44,6 +44,7 @@ class ImageDataset(Dataset):
         return (len(self.all_img_files))
     
 
+
 def load_pretraind_model(model_tag):
     """
     """
@@ -63,14 +64,29 @@ def load_pretraind_model(model_tag):
         from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
         weights = MobileNet_V3_Large_Weights.IMAGENET1K_V2
         model = mobilenet_v3_large(weights=None)
-    elif model_tag == "Vit_b_16":
-        from torchvision.models import vit_b_16, ViT_B_16_Weights
-        weights = ViT_B_16_Weights.IMAGENET1K_SWAG_E2E_V1
-        model = vit_b_16(weights=weights)
     elif model_tag == "vgg16":
         from torchvision.models import vgg16, VGG16_Weights
         weights = VGG16_Weights.IMAGENET1K_V1
         model = vgg16(weights=weights)
+    # Transformers 
+    elif model_tag == "Vit_b_16":
+        from torchvision.models import vit_b_16, ViT_B_16_Weights
+        weights = ViT_B_16_Weights.IMAGENET1K_SWAG_E2E_V1
+        model = vit_b_16(weights=weights)
+    elif model_tag == "MaxVit_T":
+        from torchvision.models import maxvit_t, MaxVit_T_Weights  
+        weights = MaxVit_T_Weights.IMAGENET1K_V1     
+        model = maxvit_t(weights=weights)  
+    elif model_tag == "Swin_S":
+        from torchvision.models import swin_s, Swin_S_Weights
+        weights = Swin_S_Weights.IMAGENET1K_V1
+        model = swin_s(weights=weights)
     else:
         print("not a valid model_tag")
     return(model, weights)    
+
+
+
+
+
+

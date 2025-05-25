@@ -20,10 +20,12 @@ batch_size = 16
 
 # model_tag = "ResNet50"
 # model_tag = "DenseNet121"
-model_tag = "MobileNet_V3_Large"
+# model_tag = "MobileNet_V3_Large"
 # model_tag = "Vit_b_16"
 # model_tag = "vgg16"
 # model_tag = 'MobileNet_randinit'
+model_tag = "MaxVit_T"
+# model_tag = "Swin_S"
 
 #-------------------------
 # Step 1: Initialize model with pre-trained weights
