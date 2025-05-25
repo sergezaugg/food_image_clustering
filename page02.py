@@ -102,7 +102,7 @@ if len(ss['dapar']['X']) > 0 :
     with c02:
         st.plotly_chart(fig02, use_container_width=False, theme=None)
    
-    st.text("Cluster content (max 45 random images from cluster)")
+    st.text("Cluster content preview (up to 60 random images from cluster)")
     display_imags_from_cluster()
    
 

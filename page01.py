@@ -19,15 +19,18 @@ with c01:
         st.markdown(''' 
 
             ### Data
-            * Data is fetched from [Food Classification dataset](https://www.kaggle.com/datasets/bjoernjostein/food-classification) published on Kaggle and original dataset is [here](https://www.aicrowd.com/challenges/kiit-ai-mini-blitz/problems/foodch)        
+            * Image data come from [Food Classification dataset](https://www.kaggle.com/datasets/bjoernjostein/food-classification) published on Kaggle 
+            * Original dataset is [here](https://www.aicrowd.com/challenges/kiit-ai-mini-blitz/problems/foodch)        
             * Over 9300 hand-annotated images with 61 classes
-            * Smaller random subsample of N=3000 images used here to avoid memory issues.        
+            * Features were pre-extracted on a GPU machine and stored [here](https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)      
+            * Smaller random subsample of N=3000 images used in dashboard to avoid memory issues.        
 
             ### Feature extraction (image to vector)
             * Features extracted with image classification models pre-trained with the Imagenet datataset
             * Details see official [PyTorch documentation](https://docs.pytorch.org/vision/main/models.html)
             * As output we used the last linear layer which outputs 1000 continuous features (ommited Softamx) 
             * These models were trained specifically for the Imagenet classes, so let's hope the feature are informative for our task
+            * As a baseline, one dataset with random.noise features is provided        
 
             ### Dimensionality reduction
             * We used Uniform Manifold Approximation and Projection ([UMAP](https://umap-learn.readthedocs.io)), a technique for general non-linear dimension reduction.  

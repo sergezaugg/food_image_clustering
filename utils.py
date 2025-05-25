@@ -14,6 +14,7 @@ from sklearn.cluster import DBSCAN
 import numpy as np
 # from sklearn.cluster import OPTICS
 
+
 def update_ss(kname, ssname):
     """
     description : helper callback fun to implement statefull apps
@@ -21,6 +22,10 @@ def update_ss(kname, ssname):
     ssname : key name of variable in session state (ss)
     """
     ss["upar"][ssname] = ss[kname]      
+
+def get_short_class_name(a):
+    """ a : a string"""
+    return("-".join(a.split("-")[0:2]))
 
 @st.cache_data
 def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
@@ -165,7 +170,7 @@ def display_imags_from_cluster():
     images_in_cluster = ss['dapar']['im_filenames'][sel]
     images_in_clu_tru = ss['dapar']['clusters_true'][sel]
     # take a smaller subsample 
-    rand_index = np.random.choice(np.arange(len(images_in_cluster)), size=min(45, len(images_in_cluster)), replace=False)    
+    rand_index = np.random.choice(np.arange(len(images_in_cluster)), size=min(60, len(images_in_cluster)), replace=False)    
     images_in_cluster_sample = images_in_cluster[rand_index]
     images_clu_tru_sample = images_in_clu_tru[rand_index]
     display_mini_images_by_file(sel_imgs = images_in_cluster_sample, labels = images_clu_tru_sample)
