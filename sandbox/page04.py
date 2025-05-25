@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : Main interactive streamlit page
+# Description : 3D plots 
 #--------------------
 
 import os
