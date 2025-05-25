@@ -75,8 +75,8 @@ if len(ss['dapar']['X']) > 0 :
     df_true = make_sorted_df(cat = ss['dapar']['clusters_true'], cat_name = 'True class', X = X2D_scaled)
     df_pred = make_sorted_df(cat = ss['dapar']['clusters_pred_str'], cat_name = 'Predicted cluster', X = X2D_scaled)
     gc.collect()
-    fig01 = make_scatter_plot(df = df_true, cat_name = 'True class',        title = "Ground truth",       height = 800, width = 1000, b_margin = 300)
-    fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters", height = 800, width = 1000, b_margin = 300)
+    fig01 = make_scatter_plot(df = df_true, cat_name = 'True class',        title = "Ground truth",       height = 950, width = 1000, b_margin = 450)
+    fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters", height = 950, width = 1000, b_margin = 450)
 
     gc.collect()
     # metrics 
@@ -96,14 +96,14 @@ if len(ss['dapar']['X']) > 0 :
             coco[1].metric("Adj. Rand Score " ,        format(round(met_rand_sc,2), '03.2f'))
    
     # show plots 
-    c01, c02 = st.columns([0.5, 0.5])
+    c01, c02, c03 = st.columns([0.5, 0.5, 0.5])
     with c01:
         st.plotly_chart(fig01, use_container_width=False, theme=None)
     with c02:
         st.plotly_chart(fig02, use_container_width=False, theme=None)
-   
-    st.text("Cluster content preview (up to 60 random images from cluster)")
-    display_imags_from_cluster()
+    with c03:
+        # st.text("Cluster content preview (up to 60 random images from cluster)")
+        display_imags_from_cluster()
    
 
 
