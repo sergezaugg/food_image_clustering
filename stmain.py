@@ -52,6 +52,6 @@ p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
 pss = st.Page("./sandbox/page_ss.py", title="(Debug diagnostics)")
-pg = st.navigation([p03, p02, p01])
+pg = st.navigation([p03, p02, p01, pss])
 pg.run()
 
