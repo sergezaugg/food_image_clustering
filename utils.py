@@ -147,7 +147,7 @@ def show_cluster_details(conf_table):
 
 @st.fragment
 def display_mini_images_by_file(sel_imgs, labels):
-    num_cols = 15
+    num_cols = 5
     grid = st.columns(num_cols)
     col = 0
     for ii, im_filname in enumerate(sel_imgs):
@@ -165,8 +165,9 @@ def display_mini_images_by_file(sel_imgs, labels):
 @st.fragment
 def display_imags_from_cluster():
     clu_id_list = np.unique(ss['dapar']['clusters_pred_str'])
-    clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", key = "k_img_clu",
-                                        default = clu_id_list[-1], label_visibility="hidden")                
+    clu_selected = st.segmented_control(label = "Cluster content preview (up to 60 random images from cluster)", 
+                                        options = clu_id_list, selection_mode="single", key = "k_img_clu",
+                                        default = clu_id_list[-1], label_visibility="visible")                
     # select all images in a given cluster 
     sel = ss['dapar']['clusters_pred_str'] == clu_selected
     images_in_cluster = ss['dapar']['im_filenames'][sel]

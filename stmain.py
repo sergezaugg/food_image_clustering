@@ -34,7 +34,7 @@ if 'upar' not in ss:
 with st.sidebar:
     st.info(ss['dapar']['dataset_name'])
     st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
-    st.text("v0.8.2")
+    st.text("v0.8.3")
     st.markdown(''':blue[QUICK GUIDE]''')
     st.text("(0) Select a dataset")
     st.text("(1) Choose UMAP params")
