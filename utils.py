@@ -38,8 +38,9 @@ def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
         metric = 'euclidean',
         n_jobs = -1
         )
-    X2D_trans = reducer.fit_transform(X, ensure_all_finite=True)
     scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    X2D_trans = reducer.fit_transform(X_scaled, ensure_all_finite=True)
     X2D_scaled = scaler.fit_transform(X2D_trans)
     return(X2D_scaled)
 
@@ -50,8 +51,8 @@ def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
     """
     scaler = StandardScaler()
     if skip_umap == True:
-        X_scaled = scaler.fit_transform(X)
-        return(X_scaled)
+        X_out = scaler.fit_transform(X)
+        return(X_out)
     else:    
         reducer = umap.UMAP(
             n_neighbors = n_neigh, 
@@ -59,9 +60,10 @@ def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
             metric = 'euclidean',
             n_jobs = -1
             )
-        X_trans = reducer.fit_transform(X, ensure_all_finite=True)
-        X_scaled = scaler.fit_transform(X_trans)
-        return(X_scaled)
+        X_scaled = scaler.fit_transform(X)
+        X_trans = reducer.fit_transform(X_scaled, ensure_all_finite=True)
+        X_out = scaler.fit_transform(X_trans)
+        return(X_out)
 
 @st.cache_data
 def perform_dbscan_clusterin(X, eps, min_samples):

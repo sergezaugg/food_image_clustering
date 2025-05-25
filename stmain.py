@@ -22,7 +22,6 @@ if 'dapar' not in ss:
         'im_filenames' : np.array([]),
         }
 
-
 if 'upar' not in ss:
     ss['upar'] = {
         'umap_n_neighbors' : 10,
@@ -35,7 +34,7 @@ if 'upar' not in ss:
 with st.sidebar:
     st.info(ss['dapar']['dataset_name'])
     st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
-    st.text("v0.8.1")
+    st.text("v0.8.2")
     st.markdown(''':blue[QUICK GUIDE]''')
     st.text("(0) Select a dataset")
     st.text("(1) Choose UMAP params")
@@ -51,8 +50,7 @@ with st.sidebar:
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
-p04 = st.Page("page04.py", title="Viz 3D (dev)")
-pss = st.Page("page_ss.py", title="(Debug diagnostics)")
+pss = st.Page("./sandbox/page_ss.py", title="(Debug diagnostics)")
 pg = st.navigation([p03, p02, p01])
 pg.run()
 
