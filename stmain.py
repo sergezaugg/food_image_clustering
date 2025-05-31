@@ -28,13 +28,14 @@ if 'upar' not in ss:
         'umap_n_neighbors' : 10,
         'umap_n_dims_red' : 16,
         'skip_umap' : False,
-        'dbscan_eps' : 0.631,
-        'dbscan_min_samples' : 15,
+        'dbscan_eps' : 0.501,
+        'dbscan_min_samples' : 20,
         }
 
 with st.sidebar:
-    st.info(ss['dapar']['dataset_name'])
+    st.info('Active data: ' + ss['dapar']['dataset_name'])
     st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
+    st.header("")
     st.markdown(''':blue[QUICK GUIDE]''')
     st.text("(1) Select a dataset")
     st.text("(2) Choose UMAP params")

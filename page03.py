@@ -33,7 +33,7 @@ else :
         with st.container(border=True, height = 200):   
             with st.form("form01", border=False):
                 npz_finame = st.selectbox("Select data with extracted features", options = ss['dapar']['li_npz'], index = 6)
-                submitted_1 = st.form_submit_button("Activate dataset", type = "primary")   
+                submitted_1 = st.form_submit_button("Activate dataset", type = "primary")  
                 if submitted_1:
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
                     npzfile = np.load(npzfile_full_path)
@@ -46,8 +46,8 @@ else :
                     ss['dapar']['im_filenames']   = N 
                     # simplify true class 
                     ss['dapar']['clusters_true'] = pd.Series(ss['dapar']['clusters_true']).apply(func= get_short_class_name).values
-                    st.rerun()  # mainly to update sidebar   
-                st.page_link("page02.py", label="Go to analysis")                
+                    st.rerun()  # mainly to update sidebar 
+            st.page_link("page02.py", label="Go to analysis")                
         
 gc.collect()
         
