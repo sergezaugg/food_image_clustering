@@ -38,7 +38,7 @@ else :
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
                     npzfile = np.load(npzfile_full_path)
                     # sample a smaller random subset 
-                    X, _, Y, _, N, _, = train_test_split(npzfile['X'], npzfile['Y'], npzfile['N'], train_size=6000, random_state=6666, shuffle=True)
+                    X, _, Y, _, N, _, = train_test_split(npzfile['X'], npzfile['Y'], npzfile['N'], train_size=5000, random_state=6666, shuffle=True)
                     # copy selected data into dedicated dict 
                     ss['dapar']['dataset_name']   = npz_finame 
                     ss['dapar']['X']              = X
