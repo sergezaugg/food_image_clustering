@@ -6,7 +6,7 @@
 import streamlit as st
 from streamlit import session_state as ss
 
-c00, c01  = st.columns([0.1, 0.18])
+c00, c01  = st.columns([0.13, 0.18])
 
 with c00:
     with st.container(border=True) : 
@@ -23,7 +23,7 @@ with c01:
             * Original dataset is [here](https://www.aicrowd.com/challenges/kiit-ai-mini-blitz/problems/foodch)        
             * Over 9300 hand-annotated images with 61 classes
             * Features were pre-extracted on a GPU machine and stored [here](https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)      
-            * Smaller random subsample of N=3000 images used in dashboard to avoid memory issues.        
+            * Smaller random subsample of N=5000 images used in dashboard to avoid memory issues.        
 
             ### Feature extraction (image to vector)
             * Features extracted with image classification models pre-trained with the Imagenet datataset

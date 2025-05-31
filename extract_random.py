@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : Creat totally random fetures (misuse scipt to get exactly same format)
+# Description : Create totally random features (quick and dirty adaptation from extract_features.py)
 #--------------------
 
 import os 
@@ -22,7 +22,7 @@ model_tag = "MobileNet_V3_Large"
 
 #-------------------------
 # Step 1: Initialize model with pre-trained weights
-model, weights = load_pretraind_model(model_tag)
+_, weights = load_pretraind_model(model_tag)
 
 #-------------------------
 # Step 2: Extract features 
