@@ -20,6 +20,7 @@ if 'dapar' not in ss:
         'clusters_true' : np.array([]),
         'clusters_pred_str' : np.array([]),
         'im_filenames' : np.array([]),
+        'li_npz' :'empty',
         }
 
 if 'upar' not in ss:
