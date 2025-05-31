@@ -27,8 +27,8 @@ if 'upar' not in ss:
         'umap_n_neighbors' : 10,
         'umap_n_dims_red' : 16,
         'skip_umap' : False,
-        'dbscan_eps' : 0.501,
-        'dbscan_min_samples' : 10,
+        'dbscan_eps' : 0.631,
+        'dbscan_min_samples' : 15,
         }
 
 with st.sidebar:
@@ -50,7 +50,6 @@ with st.sidebar:
     :primary[Created by]
     :primary[[Serge Zaugg](https://github.com/sergezaugg)]''')
     st.logo(image='pics/z_logo_turqoise.png', size="large", link="https://github.com/sergezaugg")
-
 
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
