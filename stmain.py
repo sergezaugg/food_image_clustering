@@ -34,18 +34,23 @@ if 'upar' not in ss:
 with st.sidebar:
     st.info(ss['dapar']['dataset_name'])
     st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
-    st.text("v0.8.3")
     st.markdown(''':blue[QUICK GUIDE]''')
-    st.text("(0) Select a dataset")
-    st.text("(1) Choose UMAP params")
-    st.text("(2) Tune DBSCAN params")
-    st.text("(3) Explore metrics & plots")
-    
-    st.markdown(":bulb: Plots are zoomable!")
-    st.markdown(":bulb: Hide cats by click in legend!")
-    st.markdown(":bulb: ID '-01' = not assigned to cluster") 
+    st.text("(1) Select a dataset")
+    st.text("(2) Choose UMAP params")
+    st.text("(3) Tune DBSCAN params")
+    st.text("(4) Explore metrics & plots")
+    st.header("")
     st.markdown(''':blue[COMPUTATION SPEED]''')
-    st.text("UMAP can take a few minutes while DBSCAN takes a few seconds; if values cached it is faster.")
+    st.text("UMAP can take a few minutes while DBSCAN takes a few seconds. Faster if computation already cached!")
+    # logos an links
+    st.header("")
+    c1,c2=st.columns([80,200])
+    c1.image(image='pics/z_logo_turqoise.png', width=65)
+    c2.markdown(''':primary[v0.8.4]  
+    :primary[Created by]
+    :primary[[Serge Zaugg](https://github.com/sergezaugg)]''')
+    st.logo(image='pics/z_logo_turqoise.png', size="large", link="https://github.com/sergezaugg")
+
 
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
