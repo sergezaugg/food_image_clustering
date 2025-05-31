@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : 
+# Description : A flat-script to extract features from images via last layer of pre-trained PyTorch models
 #--------------------
 
 import os 
