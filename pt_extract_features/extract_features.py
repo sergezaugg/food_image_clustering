@@ -18,6 +18,9 @@ label_path = "D:/image_clust/food_images/train_img.csv"
 featu_path = "./extracted_features"
 batch_size = 16
 
+extraction_mode = "real"
+# extraction_mode = "dummy"
+
 # model_tag = "ResNet50"
 # model_tag = "DenseNet121"
 # model_tag = "MobileNet_V3_Large"
@@ -44,7 +47,10 @@ Y_li = [] # true class
 for ii, (batch, finam, true_class) in enumerate(loader, 0):
     print(batch.shape)
     print(np.array(finam).shape)
-    prediction = model(batch).detach().numpy()  #.squeeze(0)
+    if extraction_mode == "real":
+        prediction = model(batch).detach().numpy()  #.squeeze(0)
+    if extraction_mode == "dummy":
+        prediction = np.random.uniform(0.0, 1.0, [batch.shape[0], 1000])
     file_names = np.array(finam)
     true_class = np.array(true_class)
     X_li.append(prediction)

@@ -1,11 +1,13 @@
 # CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION
 
 ### Overview
-* This is a Streamlit dashboard to cluster-analyse data from images
-* Features must first be pre-extracted from images offline with a script ```pt_extract_features./extract_features.py```
-* The resulting npz file must be loaded to a Kaggle dataset [Examlpe Kaggle Dataset](https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
-* Third, the Streamlit process in started ```streamlit run stmain.py``` (e.g. locally of on https://share.streamlit.io)
-* The path to Kaggle dataset must be adjusted in the Streamlit code.
+* This is a didactic Streamlit dashboard to cluster-analyse data from images
+* Features must first be pre-extracted from images offline with ```pt_extract_features./extract_features.py```
+* The resulting npz file(s) must be loaded to a Kaggle dataset 
+* The images must also be loaded to the same Kaggle dataset
+* See the deployed Kaggle Dataset [here](https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
+* Then, the Streamlit process is started ```streamlit run stmain.py``` (e.g. locally of on https://share.streamlit.io)
+* The path to Kaggle dataset is currently hardcoded here: ```page03.py```.
 * See the deployed version [here](https://food-image-clustering.streamlit.app)
 
 ### Data
