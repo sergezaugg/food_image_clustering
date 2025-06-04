@@ -7,7 +7,7 @@ import os
 import numpy as np
 import datetime
 import torch
-from utils_pt import ImageDataset, load_pretraind_model
+from pt_extract_features.utils_pt import ImageDataset, load_pretraind_model
 torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 

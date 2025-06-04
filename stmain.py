@@ -50,13 +50,15 @@ with st.sidebar:
     c1.image(image='pics/z_logo_turqoise.png', width=65)
     c2.markdown(''':primary[v0.8.4]  
     :primary[Created by]
-    :primary[[Serge Zaugg](https://github.com/sergezaugg)]''')
+    :primary[[Serge Zaugg](https://www.linkedin.com/in/dkifh34rtn345eb5fhrthdbgf45/)]    
+    :primary[[Pollito-ML](https://github.com/sergezaugg)]
+    ''')
     st.logo(image='pics/z_logo_turqoise.png', size="large", link="https://github.com/sergezaugg")
 
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
-pss = st.Page("./sandbox/page_ss.py", title="(Debug diagnostics)")
+pss = st.Page("page_ss.py", title="(Debug diagnostics)")
 pg = st.navigation([p03, p02, p01])
 pg.run()
 
