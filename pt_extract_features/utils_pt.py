@@ -11,11 +11,8 @@ from torchvision.io import decode_image
 import datetime
 import yaml
 import torch
-# from pt_extract_features.utils_pt import ImageDataset, load_pretraind_model
 torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-
 
 
 class ImageDataset(Dataset):
@@ -51,7 +48,8 @@ class ImageDataset(Dataset):
     
     def __len__(self):
         return (len(self.all_img_files))
-    
+
+
 def load_pretraind_model(model_tag):
     """
     """
@@ -143,8 +141,4 @@ def extract_features_from_images(config, model_tag, dev = False):
     tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
     out_name = os.path.join(featu_path, tstmp + 'Feat_from_' + model_tag + '_' + extrc_mode + '.npz')
     np.savez(file = out_name, X = X, Y = Y, N = N)
-
-
-
-
 
