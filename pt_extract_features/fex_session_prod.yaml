@@ -1,0 +1,6 @@
+image_path : "D:/image_clust/food_images/train_images"
+label_path : "D:/image_clust/food_images/train_img.csv"
+featu_path : "./extracted_features"
+batch_size : 16
+extrc_mode : "real"
+

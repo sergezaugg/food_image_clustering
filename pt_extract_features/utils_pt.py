@@ -8,6 +8,15 @@ import pandas as pd
 import numpy as np
 from torch.utils.data import Dataset
 from torchvision.io import decode_image
+import datetime
+import yaml
+import torch
+# from pt_extract_features.utils_pt import ImageDataset, load_pretraind_model
+torch.cuda.is_available()
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+
+
 
 class ImageDataset(Dataset):
     """
@@ -43,8 +52,6 @@ class ImageDataset(Dataset):
     def __len__(self):
         return (len(self.all_img_files))
     
-
-
 def load_pretraind_model(model_tag):
     """
     """
@@ -85,6 +92,57 @@ def load_pretraind_model(model_tag):
         print("not a valid model_tag")
     return(model, weights)    
 
+
+def extract_features_from_images(config, model_tag, dev = False):
+    """
+    Description: Extract linear features from multiple images and also labels from a csv file
+    Args:
+        config (path): A yaml file with source and destination paths
+        model_tag (str): a model name defined in load_pretraind_model()
+        dev (logical): if True only a few batches are processed
+    Return value: None, saves npz file to disk    
+    """
+    # load params
+    with open(config) as f:
+        conf = yaml.safe_load(f)
+    image_path = conf['image_path']
+    label_path = conf['label_path']
+    featu_path = conf['featu_path']
+    batch_size = conf['batch_size']
+    extrc_mode = conf['extrc_mode']
+    # Step 1: Initialize model with pre-trained weights
+    model, weights = load_pretraind_model(model_tag)
+    # Step 2: Extract features 
+    model.eval()
+    preprocess = weights.transforms()
+    dataset = ImageDataset(image_path, label_path, preprocess)
+    loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
+    X_li = [] # features
+    N_li = [] # file Nanes
+    Y_li = [] # true class 
+    for ii, (batch, finam, true_class) in enumerate(loader, 0):
+        if dev and ii > 2: 
+            break
+        print(batch.shape)
+        print(np.array(finam).shape)
+        if extrc_mode == "real":
+            prediction = model(batch).detach().numpy()  #.squeeze(0)
+        if extrc_mode == "dummy":
+            prediction = np.random.uniform(0.0, 1.0, [batch.shape[0], 1000])
+        file_names = np.array(finam)
+        true_class = np.array(true_class)
+        X_li.append(prediction)
+        N_li.append(file_names)
+        Y_li.append(true_class)
+    X = np.concatenate(X_li)
+    N = np.concatenate(N_li)
+    Y = np.concatenate(Y_li)
+    # check dims
+    print(X.shape, Y.shape, N.shape)
+    # save as npz
+    tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
+    out_name = os.path.join(featu_path, tstmp + 'Feat_from_' + model_tag + '_' + extrc_mode + '.npz')
+    np.savez(file = out_name, X = X, Y = Y, N = N)
 
 
 
