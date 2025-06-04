@@ -1,6 +1,7 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : Create totally random features (quick and dirty adaptation from extract_features.py)
+# Description : Create totally random features 
+# This is an inefficient quick and dirty adaptation from extract_features.py
 #--------------------
 
 import os 
@@ -18,14 +19,10 @@ label_path = "D:/image_clust/food_images/train_img.csv"
 featu_path = "./extracted_features"
 batch_size = 1024
 
+# Initialize a data loader to get extracted feature exactly as extract_features.py
+# Note that the model is not actually used, but just needed to run load_pretraind_model() 
 model_tag = "MobileNet_V3_Large"
-
-#-------------------------
-# Step 1: Initialize model with pre-trained weights
 _, weights = load_pretraind_model(model_tag)
-
-#-------------------------
-# Step 2: Extract features 
 preprocess = weights.transforms()
 dataset = ImageDataset(image_path, label_path, preprocess)
 loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)

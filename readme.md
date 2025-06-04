@@ -2,11 +2,10 @@
 
 ### Overview
 * This is a Streamlit dashboard to cluster-analyse data from images
-* Features were pre-extracted from images offline with a script ```extract_features.py```
-* The resulting npz file(a) must be loaded to a Kaggle dataset [Examlpe Kaggle Dataset](https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
+* Features must first be pre-extracted from images offline with a script ```pt_extract_features./extract_features.py```
+* The resulting npz file must be loaded to a Kaggle dataset [Examlpe Kaggle Dataset](https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
 * Third, the Streamlit process in started ```streamlit run stmain.py``` (e.g. locally of on https://share.streamlit.io)
 * The path to Kaggle dataset must be adjusted in the Streamlit code.
-* Thats all, now the dashboard is active.
 * See the deployed version [here](https://food-image-clustering.streamlit.app)
 
 ### Data
@@ -33,13 +32,15 @@
 ```bash 
 pip install -r requirements.txt
 ```
-* For feature extraction (PyTorch / GPU) and Streamlit deployment 
+* For feature extraction you also need to install **torch** and **torchvision**
+* This code was developed under Windows with CUDA 12.6 and Python 3.12.8 
 ```bash 
-pip install -r req_torchcuda.txt
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
 ```
+* If other CUDA version needed, check instructions here https://pytorch.org/get-started/locally
 
 ### Usage 
-*  To extract features, see **extract_features.py**
+*  To extract features, see **pt_extract_features./extract_features.py**
 *  Start dashboard
 ```bash 
 streamlit run stmain.py
