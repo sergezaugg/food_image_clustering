@@ -8,7 +8,7 @@ import streamlit as st
 from streamlit import session_state as ss
 import numpy as np
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide", initial_sidebar_state='expanded')
 
 if 'dapar' not in ss:
     ss['dapar'] = {
@@ -34,7 +34,7 @@ if 'upar' not in ss:
 
 with st.sidebar:
     st.info('Active data: ' + ss['dapar']['dataset_name'])
-    st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
+    st.header(''':blue[**Cluster images with DNN features**]''')
     st.header("")
     st.markdown(''':blue[QUICK GUIDE]''')
     st.text("(1) Select a dataset")
